@@ -18,10 +18,4 @@ const AppRoutes = () => {
     );
 };
 
-// parte de las rutas
-// <Route path="/" element={<HomePage />} />
-// <Route path="/dashboard" element={<DashboardPage />} />
-// <Route path="*" element={<NotFoundPage />} /> {/* Ruta 404 */}
-// parte de las rutas
-
 export default AppRoutes;
