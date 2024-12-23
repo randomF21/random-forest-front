@@ -3,7 +3,7 @@ import env from '../environment/env'; // URL del entorno
 import { useNavigate } from 'react-router-dom';
 
 
-// variable para realizar el login
+// funcion para realizar el login
 const login = async (credentials) => {
     try {
         console.log(credentials);
@@ -21,10 +21,12 @@ const login = async (credentials) => {
     }
 };
 
-//const navigate = useNavigate();
-// export function logout (
-//     navigate('/login');
-//     //sessionStorage.remove
-// );
+// funcion para cerra la sesion del usuario
+const logout = () => {
+    const navigate = useNavigate();
+    sessionStorage.clear();
+    sessionStorage.clear();
+    navigate('/login');
+};
 
-export { login };
+export { login, logout };
