@@ -4,6 +4,7 @@ import cargar from './assets/imagenes/cargar.webp';
 import modelo from './assets/imagenes/modelo.webp';
 import visualizacion from './assets/imagenes/visualizacion.webp';
 import contacto from './assets/imagenes/contacto.webp';
+import que_hacemos from './assets/imagenes/que_hacemos.png';
 
 function App() {
 
@@ -28,33 +29,10 @@ function App() {
       </header>
 
       {/* Sección: Lo que hacemos */}
-      <section className="bg-gray-100 py-12">
-        <div className="container mx-auto text-center">
+      <section className="bg-[#F0F0F0] py-12">
+        <div className="mx-auto text-center grid place-items-center">
           <h2 className="text-4xl font-bold mb-10">Lo que hacemos</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="flex flex-col items-center">
-              <img src="/path/to/icon1.png" alt="Recopilación de datos" className="w-20 h-20 mb-4" />
-              <h3 className="text-xl font-semibold mb-2">Recopilación de datos</h3>
-            </div>
-            <div className="flex flex-col items-center">
-              <img src="/path/to/icon2.png" alt="Análisis predictivo" className="w-20 h-20 mb-4" />
-              <h3 className="text-xl font-semibold mb-2">Análisis predictivo</h3>
-            </div>
-            <div className="flex flex-col items-center">
-              <img src="/path/to/icon3.png" alt="Exportación de datos" className="w-20 h-20 mb-4" />
-              <h3 className="text-xl font-semibold mb-2">Exportación de datos</h3>
-            </div>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
-            <div className="flex flex-col items-center">
-              <img src="/path/to/icon4.png" alt="Procesamiento de datos" className="w-20 h-20 mb-4" />
-              <h3 className="text-xl font-semibold mb-2">Procesamiento de datos</h3>
-            </div>
-            <div className="flex flex-col items-center">
-              <img src="/path/to/icon5.png" alt="Visualización de resultados" className="w-20 h-20 mb-4" />
-              <h3 className="text-xl font-semibold mb-2">Visualización de resultados</h3>
-            </div>
-          </div>
+          <img src={que_hacemos} alt="que_hacemos" />
         </div>
       </section>
 
@@ -79,7 +57,7 @@ function App() {
       </section>
 
       {/* Sección: características */}
-      <section className="bg-gray-100 py-16">
+      <section className="bg-[#F0F0F0] py-16">
         <div className="container mx-auto text-center">
           <h2 className="text-4xl font-bold mb-10">Características</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -110,7 +88,7 @@ function App() {
 
       {/* Sección: Contacto */}
       <section className="bg-white py-12">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-20">
           {/* Título */}
           <h2 className="text-4xl font-bold text-center mb-8">Contacto</h2>
           {/* Formulario */}
@@ -166,9 +144,9 @@ function App() {
             {/* Imagen */}
             <div className="flex justify-center">
               <img
-                src={contacto} // Cambia esto por la ruta real de la imagen
+                src={contacto}
                 alt="contacto"
-                className="w-8/12"
+                className="w-9/12"
               />
             </div>
           </div>
@@ -181,16 +159,19 @@ function App() {
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
               fill="currentColor"
+              viewBox="0 0 16 16"
               className="w-8 h-8"
             >
-              <path d="M12 0C5.373 0 0 5.373 0 12c0 2.032.512 3.948 1.4 5.644L0 24l6.611-1.372A11.945 11.945 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm5.636 17.468c-.2.564-1.15 1.098-1.585 1.15-.409.045-.874.2-2.953-.625-2.496-1.001-4.104-3.5-4.23-3.666-.127-.166-1.016-1.329-1.016-2.54s.643-1.809.875-2.059c.226-.244.49-.305.654-.305.166 0 .33.001.474.009.15.007.353-.056.553.428.2.484.682 1.677.738 1.795.06.119.1.26.02.425-.084.164-.127.257-.254.391-.127.133-.267.298-.383.402-.118.105-.24.22-.103.437.136.215.606.994 1.298 1.613.89.779 1.642 1.016 1.857 1.13.215.114.333.105.456-.06.123-.166.522-.612.66-.823.137-.21.28-.174.479-.105.2.07 1.27.599 1.49.71.217.11.358.168.409.26.05.093.05.53-.15 1.093z" />
+              <path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.447.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/>
             </svg>
           </a>
         </div>
       </section>
-
+      {/* Pie de página */}
+      <footer className="bg-[#F0F0F0] py-4 text-center">
+        <p className="text-sm">Todos los derechos reservados Copyright © 2024</p>
+      </footer>
     </>
   )
 }
