@@ -5,11 +5,16 @@ import modelo from './assets/imagenes/modelo.webp';
 import visualizacion from './assets/imagenes/visualizacion.webp';
 import contacto from './assets/imagenes/contacto.webp';
 import que_hacemos from './assets/imagenes/que_hacemos.png';
+import React from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
+import AppRoutes from './rutas/rutas'; // Importa las rutas
 
 function App() {
 
   return (
     <>
+    <AppRoutes />
+
       <header className="bg-white shadow-md">
         <div className="container mx-auto flex justify-between items-center px-4">
           {/* Logo */}
