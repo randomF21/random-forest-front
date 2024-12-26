@@ -1,4 +1,5 @@
-import toast from "react-hot-toast"; 
+import toast from "react-hot-toast";
+
 
 // Variable con las alertas para el sistema 
 const AlertaService = {
@@ -9,6 +10,12 @@ const AlertaService = {
     // alerta de error
     error: (mensaje, position) => {
         toast.error(mensaje, {position});
+    },
+    custom:(mensaje, posicion) => {
+        toast(mensaje, {
+            icon:'❕',
+            position: posicion,
+        });
     }
 }
 
