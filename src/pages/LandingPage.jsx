@@ -31,7 +31,7 @@ const LandingPage= () => {
                     </div>
                     {/* Botones */}
                     <div className="space-x-4">
-                        <button className="bg-[#2B6CB0] text-white px-4 py-2 rounded" onClick={LoginClick}>
+                        <button className="bg-[#2B6CB0] text-white px-4 py-2 rounded hover:bg-[#125fb0]" onClick={LoginClick}>
                             Iniciar sesión
                         </button>
                         <button className="bg-gray-200 text-gray-800 px-4 py-2 rounded hover:bg-gray-300" onClick={RegistroClick}>
@@ -147,7 +147,7 @@ const LandingPage= () => {
                                 <div className="flex justify-center">
                                     <button
                                         type="submit"
-                                        className="w-72 bg-[#2B6CB0] text-white text-lg py-2 rounded-lg transition"
+                                        className="w-72 bg-[#2B6CB0] text-white text-lg py-2 rounded-lg transition hover:bg-[#125fb0]"
                                     >
                                         Enviar
                                     </button>
