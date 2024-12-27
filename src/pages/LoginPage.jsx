@@ -10,7 +10,7 @@ const LoginPage = () => {
     const handleLogin = async (credentials) => {
         try {
             // realizamos el envio de datos y esperamos a que finalice
-            const response = await login(credentials);
+            await login(credentials);
             //console.log('Login successful:', response);
             // Manejar el éxito del login, como redirigir al usuario.
             AlertaService.success( response.mensaje + ' C:');

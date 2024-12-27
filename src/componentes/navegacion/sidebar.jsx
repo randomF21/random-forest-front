@@ -22,6 +22,14 @@ const SideBar = () => {
                         <span>Inicio</span>
                     </a>
                 </li>
+
+                <li className="mb-4"> 
+                    <a href="#" className="flex items-center px-4 py-2 hover:bg-gray-100 transition-colors duration-200"> 
+                    <span>Co</span>
+                        <span className="text-center flex-grow"> Entrenamiento módelo </span> 
+                    </a> 
+                </li>
+
                 <li className="mb-4">
                     <a href="#" className="flex justify-between items-center px-4 py-2 hover:bg-gray-100 transition-colors duration-200 rounded-lg">
                     <span>Co</span>
@@ -37,7 +45,7 @@ const SideBar = () => {
                 <li className="mb-8">
                     <a href="#" className="flex justify-between items-center px-4 py-2 hover:bg-gray-100 transition-colors duration-200 rounded-lg">
                         <span>Co</span>
-                        <span>Entrenamiento <br /> módelo</span>
+                        <span>Entrenamiento módelo</span>
                     </a>
                 </li>
                 <li className="mb-8">

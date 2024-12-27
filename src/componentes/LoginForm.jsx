@@ -2,9 +2,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
-import { toast } from 'react-hot-toast';
 import { AlertaService } from '../servicios/AlertaService';
-import { useNavigate } from 'react-router-dom';
 
 import logo from '../assets/imagenes/logo.webp';
 import login from '../assets/imagenes/login.webp';
@@ -13,7 +11,7 @@ import login from '../assets/imagenes/login.webp';
 const LoginForm = ({ onLogin }) => {
     // validamos las variables  y verificamos el dato
     const validationSchema = Yup.object({
-        username: Yup.string().required('El usuario es requerido'),
+        email: Yup.string().required('El usuario es requerido'),
         password: Yup.string().required('La contraseña es requerida'),
     })
 
@@ -28,9 +26,9 @@ const LoginForm = ({ onLogin }) => {
 
     React.useEffect(() => {
         // Revisa si hay errores y muestra los toasts
-        if (errors.username) {
-            //toast.error(errors.username.message);  
-            AlertaService.error(errors.username.message); // Muestra error de username 
+        if (errors.email) {
+            //toast.error(errors.email.message);  
+            AlertaService.error(errors.email.message); // Muestra error de email 
 
         }
         if (errors.password) {
@@ -58,15 +56,15 @@ const LoginForm = ({ onLogin }) => {
                 >
                     <div className="mb-4">
                         <label
-                            htmlFor="username"
+                            htmlFor="email"
                             className="block text-base font-medium "
                         >
                             Usuario:
                         </label>
                         <input
                             type="text"
-                            id="username"
-                            {...register("username")}
+                            id="email"
+                            {...register("email")}
                             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-[#2B6CB0]"
                         />
                     </div>
