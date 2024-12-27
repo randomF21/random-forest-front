@@ -10,18 +10,50 @@ const LoginPage = () => {
     const handleLogin = async (credentials) => {
         try {
             // realizamos el envio de datos y esperamos a que finalice
-            await login(credentials);
+            const reg = await login(credentials);
             //console.log('Login successful:', response);
-            // Manejar el éxito del login, como redirigir al usuario.
-            AlertaService.success( response.mensaje + ' C:');
-            setTimeout(() => {
-                navigate('/dashboard');
-            }, 1000);
+            console.log(reg)
+            if (reg === true) {
+                // Manejar el éxito del login, como redirigir al usuario.
+                AlertaService.success('Ingresando C:');
+                setTimeout(() => {
+                    navigate('/dashboard');
+                }, 1000);
+            }
+            
         } catch (error) {
-            //console.error('Login failed:', error);
-            // Manejar el error, como mostrar un mensaje al usuario.
-            AlertaService.error(error.response.data.error + ' :c');
+            // Maneja el error de manera correcta
+            console.error('Error en el registro:', error);
+
+            // Verifica si el error tiene respuesta (response) y muestra el mensaje de error
+            if (error.response && error.response.data) {
+                AlertaService.error(error.response.data.error || 'Error desconocido');
+            } else {
+                AlertaService.error('Error al procesar la solicitud');
+            }
         }
+
+        // try {
+        //     const reg = await Registro(credentials);
+            
+        //     if (reg === true) {
+        //         // Si el registro es exitoso, muestra un mensaje y redirige
+        //         AlertaService.success('Usuario creado C:');
+        //         setTimeout(() => {
+        //             navigate('/dashboard');
+        //         }, 1000);
+        //     }
+        // } catch (error) {
+        //     // Maneja el error de manera correcta
+        //     console.error('Error en el registro:', error);
+
+        //     // Verifica si el error tiene respuesta (response) y muestra el mensaje de error
+        //     if (error.response && error.response.data) {
+        //         AlertaService.error(error.response.data.error || 'Error desconocido');
+        //     } else {
+        //         AlertaService.error('Error al procesar la solicitud');
+        //     }
+        // }
     };
 
     return (

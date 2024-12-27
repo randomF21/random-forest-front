@@ -9,8 +9,6 @@ const RegistroPage = () => {
     // generamos variables para la navegacion
     const navigate = useNavigate();
     const handleRegistro = async (credentials) => {
-        console.log(credentials);
-
         try {
             const reg = await Registro(credentials);
             
@@ -32,24 +30,6 @@ const RegistroPage = () => {
                 AlertaService.error('Error al procesar la solicitud');
             }
         }
-
-        // // realizamos el envio de datos y esperamos a que finalice
-        // const reg = await Registro(credentials);
-        // // validamos que fue lo que llego
-        // if(reg == true){
-        //     // Manejar el éxito del login, como redirigir al usuario.
-        //     AlertaService.success('Usuario creado C:');
-        //     setTimeout(() => {
-        //         //navigate('/dashboard');
-        //         console.log('al dashboard')
-        //     }, 1000);
-        // } else {
-        //     //console.error('Login failed:', error);
-        //     // Manejar el error, como mostrar un mensaje al usuario.
-        //     console.log('ta mal')
-        //     console.log(AxiosError)
-        //     AlertaService.error(error.response.data.error + ' :c');
-        // }
     };
 
     return (
