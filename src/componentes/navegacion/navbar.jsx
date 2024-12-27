@@ -1,13 +1,15 @@
-const Navbar = ({titulo}) => {
+import logo from '../../assets/imagenes/logo.webp';
+const Navbar = ({ titulo }) => {
     return (
-        <div className="bg-gray-300 flex justify-between items-center px-12 border-b border-gray-400 h-1/6">
+        <div className="fixed w-full flex justify-between items-center px-12 h-32 border-b bg-white z-10">
 
-            <h2 className="text-7xl" >{titulo}</h2>
+            <h2 className="text-7xl ml-60 font-semibold" >{titulo}</h2>
 
-            <div className="w-full h-[80%] flex justify-end items-center">
-            <div className="w-[350px] h-[100px] bg-gray-300 border border-gray-500">
-                a
-            </div>
+            <div className="flex justify-end items-center">
+                <img src={logo} alt="logo" className="w-64" />
+                {/* <div className="w-[350px] h-[100px] bg-gray-300 border border-gray-500">
+                    a
+                </div> */}
 
                 {/* <img src="https://via.placeholder.com/100x200.png" 
                      alt="imagen aleatoria"
