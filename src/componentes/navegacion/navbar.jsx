@@ -3,7 +3,7 @@ const Navbar = ({ titulo }) => {
     return (
         <div className="fixed w-full flex justify-between items-center px-12 h-32 border-b bg-white z-10">
 
-            <h2 className="text-7xl ml-60" >{titulo}</h2>
+            <h2 className="text-7xl ml-60 font-semibold" >{titulo}</h2>
 
             <div className="flex justify-end items-center">
                 <img src={logo} alt="logo" className="w-64" />
