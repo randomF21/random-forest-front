@@ -6,7 +6,7 @@ const DashboardPage = () => {
     return (
         <>
             <div className="flex m-0 p-0">
-                <SideBar />
+                <SideBar dato="https://picsum.photos/200" />
                 <div className='w-full'>
                     <Navbar titulo={'Bienvenid@'} />
                     <div className="ml-60 mt-40 bg-white h-screen p-8">

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import env from '../environment/env'; // URL del entorno
 import { useNavigate } from 'react-router-dom';
-
+import { AlertaService } from './AlertaService';
 
 // funcion para realizar el login
 const login = async (credentials) => {
@@ -21,11 +21,11 @@ const login = async (credentials) => {
 };
 
 // funcion para cerra la sesion del usuario
-const logout = () => {
-    const navigate = useNavigate();
+const logout = (navigate) => {
     sessionStorage.clear();
     sessionStorage.clear();
     navigate('/login');
+    AlertaService.success('Sesión cerrada');
 };
 
 export { login, logout };
