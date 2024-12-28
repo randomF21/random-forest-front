@@ -123,6 +123,7 @@ const SideBar = ({ ruta_foto, nombreUsuario, rol }) => {
                                 <span className='break-normal' >Gestión de Usuarios</span>
                             </Link>
                         </li>
+                        
                         <li className="mb-4">
                             <Link to="#" className="flex gap-8 items-center px-4 py-2 hover:bg-white hover:text-black transition-colors duration-200 rounded-lg">
                                 <Settings size={24} />
