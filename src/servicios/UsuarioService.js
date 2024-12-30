@@ -2,19 +2,20 @@ import axios from 'axios';
 import env from '../environment/env'; // URL del entorno
 import { getToken } from './AuthService';
 
+//buscamos el token 
+const token = getToken();
+// configuramos el header para la autorizacion
+const autorizacion = {
+    headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+    }
+};
+
 // funcion para realizar la insercion de usuarios SUPER ADMIN o ADMIN
 const InsertarUsuario = async (credentials) => {
     console.log(credentials);
     
-    //buscamos el token 
-    const token = getToken();
-    // configuramos el header para la autorizacion
-    const autorizacion = {
-        headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json',
-        }
-    };
     // definimos valores para cambiar por el del rol
     const rolMap = {
         'superadmin':1,
@@ -38,4 +39,9 @@ const InsertarUsuario = async (credentials) => {
     }
 };
 
-export { InsertarUsuario };
+const TraerUsuario = () => {
+    
+    return axios.get(`${env.api_url}/usuario/`, autorizacion);
+}
+
+export { InsertarUsuario, TraerUsuario };

@@ -1,6 +1,7 @@
 import Navbar from "../componentes/navegacion/navbar";
 import SideBar from "../componentes/navegacion/sidebar";
 import AgregarUsuarioModal from "../componentes/modal/AgregarUsuario";
+import { TraerUsuario } from "../servicios/UsuarioService";
 
 import React, { useState } from 'react';
 import { Trash2, UserPen } from "lucide-react";
@@ -18,6 +19,9 @@ const UsuariosPage = () => {
     const closeModal = () => {
         setIsModalOpen(false);
     };
+
+    const usuariosss = TraerUsuario();
+    console.log(usuariosss)
 
     return (
         <>
