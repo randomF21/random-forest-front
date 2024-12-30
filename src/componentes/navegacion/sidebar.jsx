@@ -72,7 +72,7 @@ const SideBar = ({ ruta_foto, nombreUsuario, rol }) => {
                     </>
                 )}
 
-                {rol == "1" && (
+                {/* {rol == "1" && (
                     <>
                         <li className="mb-4">
                             <Link to="#" className="flex gap-8 items-center px-4 py-2 hover:bg-white hover:text-black transition-colors duration-200 rounded-lg">
@@ -88,9 +88,9 @@ const SideBar = ({ ruta_foto, nombreUsuario, rol }) => {
                             </Link>
                         </li>
                     </>
-                )}
+                )} */}
 
-                {(rol == "1" || rol == "2") && (
+                {/* {(rol == "1" || rol == "2") && (
                     <>
                         <li className="mb-4">
                             <Link href="#" className="flex gap-8 items-center px-4 py-2 hover:bg-white hover:text-black transition-colors duration-200 rounded-lg">
@@ -106,7 +106,7 @@ const SideBar = ({ ruta_foto, nombreUsuario, rol }) => {
                             </Link>
                         </li>
                     </>
-                )}
+                )} */}
 
                 {rol == "1" && (
                     <>
@@ -124,12 +124,12 @@ const SideBar = ({ ruta_foto, nombreUsuario, rol }) => {
                             </Link>
                         </li>
                         
-                        <li className="mb-4">
+                        {/* <li className="mb-4">
                             <Link to="#" className="flex gap-8 items-center px-4 py-2 hover:bg-white hover:text-black transition-colors duration-200 rounded-lg">
                                 <Settings size={24} />
                                 <span>Configuración</span>
                             </Link>
-                        </li>
+                        </li> */}
                     </>
                 )}
 
