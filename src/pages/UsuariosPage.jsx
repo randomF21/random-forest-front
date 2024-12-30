@@ -12,13 +12,10 @@ const UsuariosPage = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const openModal = () => {
-        console.log("Abriendo el modal");  // Para verificar
         setIsModalOpen(true);
-        console.log("Abriendo el modal1");
     };
     
     const closeModal = () => {
-        console.log("Cerrando el modal");  // Para verificar
         setIsModalOpen(false);
     };
 

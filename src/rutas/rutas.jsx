@@ -6,10 +6,11 @@ import LandingPage from '../pages/LandingPage';
 import LoginPage from '../pages/LoginPage';
 import RegistroPage from '../pages/RegistroPage';
 import DashboardPage from '../pages/DashboardPage';
-// proteccion de ruta
-import RutaProtegida from '../seguridad/rutaProtegida';
 import CargarDatosPage from '../pages/CargarDatosPage';
 import UsuariosPage from '../pages/UsuariosPage';
+// proteccion de ruta
+import RutaProtegida from '../seguridad/rutaProtegida';
+
 
 const AppRoutes = () => {
     return (
@@ -19,11 +20,11 @@ const AppRoutes = () => {
                 <Route path="/login" element={<LoginPage />} /> 
                 <Route path="/registro" element={<RegistroPage />} />
 
-                {/* <Route element={<RutaProtegida />} > */}
+                <Route element={<RutaProtegida />} >
                     <Route path="/dashboard" element={<DashboardPage />} />
                     <Route path="/cargar-datos" element={<CargarDatosPage />} />
                     <Route path="/usuarios" element={<UsuariosPage />} />
-                {/* </Route> */}
+                </Route>
 
             </Routes>
             <Toaster position="top-right" reverseOrder={false} />
