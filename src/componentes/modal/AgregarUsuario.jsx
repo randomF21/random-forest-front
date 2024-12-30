@@ -1,17 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
-import { AlertaService } from '../../servicios/AlertaService';
 import { X, UserPlus } from 'lucide-react';
+import { InsertarUsuario } from '../../servicios/UsuarioService';
+import { AlertaService } from '../../servicios/AlertaService';
 
 const AgregarUsuarioModal = ({ isOpen, onClose }) => {
-    console.log("Abriendo el modal2");
-    if (!isOpen) return null;
 
     // Esquema de validación con Yup
     const validationSchema = Yup.object().shape({
-        correo: Yup.string()
+        email: Yup.string()
             .email("Debes ingresar un correo válido")
             .required("El correo es obligatorio"),
         nombre: Yup.string()
@@ -40,13 +39,30 @@ const AgregarUsuarioModal = ({ isOpen, onClose }) => {
     });
 
     // Función que se ejecuta al enviar el formulario
-    const onSubmit = (data) => {
-        console.log("Datos enviados:", data);
-        alert("Usuario creado exitosamente.");
+    const onSubmit = async (data) => {
+        
+        data = {
+            ...data,
+            apellido: 'apellido',
+            nacimiento: '2000-02-02',
+            num_documento: '1234567890',
+            telefono: '3214105263',
+            tipo_documento: 'Registro Civil'
+        }
+
+        try { 
+            const usuarioCreado = await InsertarUsuario(data); 
+            console.log("Usuario creado:", usuarioCreado); 
+            AlertaService.success("Usuario creado exitosamente."); 
+            onClose(); 
+        } catch (error) { 
+            AlertaService.error("Error al crear el usuario."); 
+        }
     };
 
+    if (!isOpen) return null;
 
-    return (    
+    return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
             <div className="bg-gray-100 rounded-lg p-8 w-full max-w-2xl relative">
                 <button
@@ -55,7 +71,7 @@ const AgregarUsuarioModal = ({ isOpen, onClose }) => {
                 >
                     <X className="w-6 h-6" />
                 </button>
-                
+
                 <div className="flex items-start space-x-8">
                     <div className="flex-1">
                         <h2 className="text-2xl font-bold mb-6">Crear nuevo usuario</h2>
@@ -65,11 +81,11 @@ const AgregarUsuarioModal = ({ isOpen, onClose }) => {
                                 <label className="block text-sm font-medium mb-1">Correo</label>
                                 <input
                                     type="text"
-                                    {...register("correo")}
+                                    {...register("email")}
                                     placeholder="Ingresa el correo"
                                     className="w-full p-2 border rounded-md"
                                 />
-                                
+                                <p className="text-red-600 text-sm">{errors.email?.message}</p>
                             </div>
 
                             <div>
@@ -80,6 +96,7 @@ const AgregarUsuarioModal = ({ isOpen, onClose }) => {
                                     placeholder="Ingresa el nombre"
                                     className="w-full p-2 border rounded-md"
                                 />
+                                <p className="text-red-600 text-sm">{errors.nombre?.message}</p>
                             </div>
 
                             <div>
@@ -90,6 +107,7 @@ const AgregarUsuarioModal = ({ isOpen, onClose }) => {
                                     placeholder="Ingresa la contraseña"
                                     className="w-full p-2 border rounded-md"
                                 />
+                                <p className="text-red-600 text-sm">{errors.password?.message}</p>
                             </div>
 
                             <div>
@@ -100,15 +118,17 @@ const AgregarUsuarioModal = ({ isOpen, onClose }) => {
                                     placeholder="Confirma la contraseña"
                                     className="w-full p-2 border rounded-md"
                                 />
+                                <p className="text-red-600 text-sm">{errors.confirmarPassword?.message}</p>
                             </div>
 
                             <div>
                                 <label className="block text-sm font-medium mb-1">Rol</label>
                                 <select {...register("rol")} className="w-full p-2 border rounded-md">
                                     <option value="">Selecciona una opción</option>
-                                    <option value="1">Superadministrador</option>
-                                    <option value="2">Administrador</option>
+                                    <option value="superadmin">Super administrador</option>
+                                    <option value="admin">Administrador</option>
                                 </select>
+                                <p className="text-red-600 text-sm">{errors.rol?.message}</p>
                             </div>
 
                             <button
