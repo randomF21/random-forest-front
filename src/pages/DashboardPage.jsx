@@ -41,58 +41,54 @@ const DashboardPage = () => {
                 <div className='w-full'>
                     <Navbar titulo={'Bienvenid@'} />
                     <div className="ml-60 mt-40 bg-white h-screen p-8">
+                        {/* Estilos primera fila */}
                         <div className="flex flex-wrap gap-4 w-full mt-6">
 
-                            <div className="bg-white rounded-lg w-[32%] mb-6 shadow-md h-full">
-                                <div className="p-6 w-[100%] h-[70%] border-b rounded-t-lg">
-                                    <div className="relative">
-                                        {estadisticas && estadisticas.confusion_matrix && (
-                                            <div>
-                                                <h2 className="text-center text-xl font-bold">Matriz de Confusión</h2>
-                                                <table className="table-auto border-collapse border border-gray-400 mx-auto">
-                                                    <thead>
-                                                        <tr>
-                                                            <th></th>
-                                                            {estadisticas.confusion_matrix.columns.map((col, index) => (
-                                                                <th key={index} className="border px-4 py-2">{col}</th>
+                            <div className="bg-white rounded-lg w-[32%] mb-6 shadow-md h-80 p-6">
+                                <div className="relative">
+                                    {estadisticas && estadisticas.confusion_matrix && (
+                                        <div>
+                                            <h2 className="text-center text-xl font-bold mb-10">Matriz de Confusión</h2>
+                                            <table className="table-auto border-collapse mx-auto w-full">
+                                                <thead>
+                                                    <tr>
+                                                        <th></th>
+                                                        {estadisticas.confusion_matrix.columns.map((col, index) => (
+                                                            <th key={index} className="px-4 py-2">{col}</th>
+                                                        ))}
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {estadisticas.confusion_matrix.data.map((row, rowIndex) => (
+                                                        <tr key={rowIndex}>
+                                                            <td className="px-4 py-2">{estadisticas.confusion_matrix.index[rowIndex]}</td>
+                                                            {row.map((cell, cellIndex) => (
+                                                                <td key={cellIndex} className="border px-4 py-2">{cell}</td>
                                                             ))}
                                                         </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        {estadisticas.confusion_matrix.data.map((row, rowIndex) => (
-                                                            <tr key={rowIndex}>
-                                                                <td className="border px-4 py-2">{estadisticas.confusion_matrix.index[rowIndex]}</td>
-                                                                {row.map((cell, cellIndex) => (
-                                                                    <td key={cellIndex} className="border px-4 py-2">{cell}</td>
-                                                                ))}
-                                                            </tr>
-                                                        ))}
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        )}
-                                    </div>
-                                </div>
-                            </div>
-
-
-                            <div className="bg-white rounded-lg w-[32%] mb-6 shadow-md h-full">
-                                <div className="p-6 w-[100%] h-[70%] border-b rounded-t-lg">
-                                    <CurvaROC rocData={estadisticas.roc_curve} />
-                                </div>
-                            </div>
-
-                            <div className="bg-white rounded-lg w-[32%] mb-6 shadow-md h-full">
-                                <div className="p-6 w-[100%] h-[70%] border-b rounded-t-lg">
-                                    <div className="relative">
-                                        <div className="flex flex-col text-lg">
-                                            <p className="text-xl font-bold text-center">Tipo de persona</p>
+                                                    ))}
+                                                </tbody>
+                                            </table>
                                         </div>
+                                    )}
+                                </div>
+                            </div>
+
+
+                            <div className="bg-white rounded-lg w-[32%] mb-6 shadow-md h-80 p-6">
+                                <CurvaROC rocData={estadisticas.roc_curve} />
+                            </div>
+
+                            <div className="bg-white rounded-lg w-[32%] mb-6 shadow-md h-80 p-6">
+                                <div className="relative">
+                                    <div className="flex flex-col text-lg">
+                                        <p className="text-xl font-bold text-center">Tipo de persona</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
+                        {/* Estilos segunda fila */}
                         <div className="flex flex-wrap gap-4 w-full mt-6">
                             <div className="bg-white p-6 rounded-lg shadow-lg w-full md:w-[49%] max-w-full mb-6">
                                 <h3 className="text-2xl font-bold mb-4 text-center">Cantidad de entrenamientos</h3>

@@ -49,6 +49,13 @@ const CurvaROC = ({ rocData }) => {
             title: {
                 display: true,
                 text: `Curva ROC (AUC: ${rocData.auc.toFixed(2)})`,
+                font: {
+                    size: 20,
+                },
+                color: 'black',
+                padding: {
+                    bottom: 20,
+                },
             },
         },
         scales: {
@@ -70,7 +77,7 @@ const CurvaROC = ({ rocData }) => {
         },
     };
 
-    return <Line data={data} options={options} />;
+    return <Line data={data} options={options} height={310} width={500} />;
 };
 
 export default CurvaROC;
