@@ -176,7 +176,7 @@ const RegistroForm = ( {onRegistro} ) => {
                         </button>
                     </div>
                     <p className="mt-6 text-center text-sm text-[#04103B]">
-                        ¿Tienes una cuenta?{" "}defaultv
+                        ¿Tienes una cuenta?{" "}
                         <a href="/login" className="text-[#2B6CB0] hover:underline">
                             Ingresa
                         </a>
