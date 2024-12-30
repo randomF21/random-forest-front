@@ -1,7 +1,34 @@
+import React, { useState, useEffect } from 'react';
 import SideBar from '../componentes/navegacion/sidebar';
 import Navbar from '../componentes/navegacion/navbar';
+import ModeloService from '../servicios/modeloService';
+import CurvaROC from '../componentes/CurvaRoc';
 
 const DashboardPage = () => {
+    const [estadisticas, setEstadisticas] = useState(null);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        const cargarEstadisticas = async () => {
+            try {
+                const data = await ModeloService.obtenerEstadisticas();
+                setEstadisticas(data); // Guarda las estadísticas en el estado
+            } catch (error) {
+                setError('Error al cargar estadísticas del modelo');
+            }
+        };
+
+        cargarEstadisticas();
+    }, []);
+
+    if (error) {
+        return <p>{error}</p>;
+    }
+
+    if (!estadisticas) {
+        return <p>Cargando estadísticas...</p>;
+    }
+
     return (
         <>
             <div className="flex m-0 p-0">
@@ -14,20 +41,39 @@ const DashboardPage = () => {
                             <div className="bg-white rounded-lg w-[32%] mb-6 shadow-md h-full">
                                 <div className="p-6 w-[100%] h-[70%] border-b rounded-t-lg">
                                     <div className="relative">
-                                        <div className="flex flex-col text-lg">
-                                            <p className="text-xl font-bold text-center">Matriz de confusión</p>
-                                        </div>
+                                        {estadisticas && estadisticas.confusion_matrix && (
+                                            <div>
+                                                <h2 className="text-center text-xl font-bold">Matriz de Confusión</h2>
+                                                <table className="table-auto border-collapse border border-gray-400 mx-auto">
+                                                    <thead>
+                                                        <tr>
+                                                            <th></th>
+                                                            {estadisticas.confusion_matrix.columns.map((col, index) => (
+                                                                <th key={index} className="border px-4 py-2">{col}</th>
+                                                            ))}
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {estadisticas.confusion_matrix.data.map((row, rowIndex) => (
+                                                            <tr key={rowIndex}>
+                                                                <td className="border px-4 py-2">{estadisticas.confusion_matrix.index[rowIndex]}</td>
+                                                                {row.map((cell, cellIndex) => (
+                                                                    <td key={cellIndex} className="border px-4 py-2">{cell}</td>
+                                                                ))}
+                                                            </tr>
+                                                        ))}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
                             </div>
 
+
                             <div className="bg-white rounded-lg w-[32%] mb-6 shadow-md h-full">
                                 <div className="p-6 w-[100%] h-[70%] border-b rounded-t-lg">
-                                    <div className="relative">
-                                        <div className="flex flex-col text-lg">
-                                            <p className="text-xl font-bold text-center">Curva ROC</p>
-                                        </div>
-                                    </div>
+                                    <CurvaROC rocData={estadisticas.roc_curve} />
                                 </div>
                             </div>
 
@@ -55,7 +101,7 @@ const DashboardPage = () => {
                                         <div className="px-4 py-2 text-lg font-semibold w-1/3">Base de datos</div>
                                         <div className="px-4 py-2 text-lg font-semibold w-1/3">Descargar</div>
                                     </div>
-                                    
+
                                     <div className="flex mb-4 border rounded-lg w-11/12 mx-auto items-center">
                                         <div className="px-4 py-2 text-lg w-1/3">27/12/2024</div>
                                         <div className="px-4 py-2 w-1/3">Encuestas</div>
