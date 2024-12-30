@@ -14,7 +14,6 @@ const autorizacion = {
 
 // funcion para realizar la insercion de usuarios SUPER ADMIN o ADMIN
 const InsertarUsuario = async (credentials) => {
-    console.log(credentials);
     
     // definimos valores para cambiar por el del rol
     const rolMap = {
@@ -22,8 +21,6 @@ const InsertarUsuario = async (credentials) => {
         'admin':2
     }
     credentials.rol = rolMap[credentials.rol] || credentials.rol;
-
-    console.log(credentials);
 
     try {
         // variable para el proceso, enviamos las credenciales y definimos la ruta
@@ -39,9 +36,14 @@ const InsertarUsuario = async (credentials) => {
     }
 };
 
-const TraerUsuario = () => {
-    
-    return axios.get(`${env.api_url}/usuario/`, autorizacion);
+const TraerUsuario = async () => {
+    try {
+        const response = axios.get(`${env.api_url}/usuario/`, autorizacion);
+        return response;
+    } catch (error) {
+        console.error('Error al traer los usuarios:', error);
+        throw error;
+    }
 }
 
 export { InsertarUsuario, TraerUsuario };
