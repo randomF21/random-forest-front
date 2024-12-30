@@ -1,16 +1,35 @@
 import Navbar from "../componentes/navegacion/navbar";
 import SideBar from "../componentes/navegacion/sidebar";
+import AgregarUsuarioModal from "../componentes/modal/AgregarUsuario";
+
+import React, { useState } from 'react';
+import { Trash2, UserPen } from "lucide-react";
 
 const UsuariosPage = () => {
+    const user = JSON.parse(sessionStorage.getItem('usuario')); // Suponiendo que guardas un objeto con los datos del usuario 
+    const { rol, nombre, apellido } = user;
+    const nombreCompleto = `${nombre} ${apellido}`; // Se utiliza para dar el espacio entre el nombre y el apellido
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const openModal = () => {
+        setIsModalOpen(true);
+    };
+    
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
+
     return (
         <>
             <div className="flex m-0 p-0">
-                <SideBar />
+                <SideBar ruta_foto="https://picsum.photos/200" nombreUsuario={nombreCompleto} rol={rol} />
                 <div className='w-full'>
                     <Navbar titulo={'Usuarios'} />
                     <div className="ml-60 mt-32 bg-white h-screen p-8">
                         <div className="overflow-x-auto w-11/12 mx-auto">
-                            <button className="bg-[#2B6CB0] p-2 text-white rounded-lg mb-10 hover:bg-[#125fb0]">
+                            <button onClick={openModal}
+                                className="bg-[#2B6CB0] p-2 text-white rounded-lg mb-10 hover:bg-[#125fb0]">
                                 Crear nuevo usuario
                             </button>
                             <div className="flex mb-2 text-center">
@@ -29,21 +48,12 @@ const UsuariosPage = () => {
                                 <div className="px-4 py-2 w-1/3">Inactivo</div>
                                 <div className="px-4 py-2 w-1/3">
                                     <button className="px-2 hover:bg-gray-100">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-pen"><path d="M11.5 15H7a4 4 0 0 0-4 4v2" />
-                                            <path d="M21.378 16.626a1 1 0 0 0-3.004-3.004l-4.01 4.012a2 2 0 0 0-.506.854l-.837 2.87a.5.5 0 0 0 .62.62l2.87-.837a2 2 0 0 0 .854-.506z" />
-                                            <circle cx="10" cy="7" r="4" />
-                                        </svg>
+                                        <UserPen size={24} />
                                     </button>
                                 </div>
                                 <div className="px-4 py-2 w-1/3">
                                     <button className="px-2 hover:bg-gray-100">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash-2"><path d="M3 6h18" /><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
-                                            <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" /><line x1="10" x2="10" y1="11" y2="17" /><line x1="14" x2="14" y1="11" y2="17" />
-                                        </svg>
+                                        <Trash2 size={24} />
                                     </button>
                                 </div>
                             </div>
@@ -51,6 +61,9 @@ const UsuariosPage = () => {
                     </div>
                 </div>
             </div>
+            <AgregarUsuarioModal isOpen={isModalOpen} onClose={closeModal}>
+                
+            </AgregarUsuarioModal>
         </>
     );
 };

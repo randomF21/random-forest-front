@@ -16,6 +16,14 @@ const AlertaService = {
             icon:'❕',
             position: posicion,
         });
+    },
+    loading:(mensaje, posicion) => {
+        const toastId = toast.loading(mensaje, {
+            position: posicion
+        });
+        setTimeout(() => {
+            toast.dismiss(toastId);
+        }, 1000);
     }
 }
 
