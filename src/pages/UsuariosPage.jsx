@@ -11,7 +11,8 @@ const UsuariosPage = () => {
     // guardamos los datos en una varible
     const user = JSON.parse(sessionStorage.getItem('usuario'));
     // asignamos que necesitamos de estos datos
-    const { rol, nombre, apellido } = user;
+    const { rol, nombre, apellido, id, imagen } = user;
+    const ruta = imagen ? `http://127.0.0.1:8000/foto_user/${imagen}` : null;
     //agrupamos nombre en una sola variable
     const nombreCompleto = `${nombre} ${apellido}`;
     // definimos y alternamos el estado de la modal
@@ -75,7 +76,7 @@ const UsuariosPage = () => {
     return (
         <>
             <div className="flex m-0 p-0">
-                <SideBar ruta_foto="https://picsum.photos/200" nombreUsuario={nombreCompleto} rol={rol} />
+                <SideBar ruta_foto={ruta} nombreUsuario={nombreCompleto} rol={rol} id={id} />
                 <div className='w-full'>
                     <Navbar titulo={'Usuarios'} />
                     <div className="ml-60 mt-32 bg-white h-screen p-8">

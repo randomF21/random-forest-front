@@ -17,13 +17,13 @@ const AlertaService = {
             position: posicion,
         });
     },
-    loading:(mensaje, posicion) => {
+    loading:(mensaje, posicion, tiempo) => {
         const toastId = toast.loading(mensaje, {
             position: posicion
         });
-        setTimeout(() => {
-            toast.dismiss(toastId);
-        }, 1000);
+    },
+    quitar:() => {
+        toast.dismiss();
     }
 }
 
