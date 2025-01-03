@@ -3,10 +3,14 @@ import SideBar from "../componentes/navegacion/sidebar";
 
 const FormularioPage = () => {
 
+    const user = JSON.parse(sessionStorage.getItem('usuario')); // Suponiendo que guardas un objeto con los datos del usuario 
+    const { rol, nombre, apellido } = user;
+    const nombreCompleto = `${nombre} ${apellido}`; // Se utiliza para dar el espacio entre el nombre y el apellido
+
     return (
         <>
             <div className="flex m-0 p-0">
-                <SideBar ruta_foto="https://picsum.photos/200" />
+                <SideBar ruta_foto="https://picsum.photos/200" nombreUsuario={nombreCompleto} rol={rol} />
                 <div className='w-full'>
                     <Navbar titulo={'Bienvenid@'} />
                     <div className="ml-60 mt-32 bg-white h-screen p-8">
