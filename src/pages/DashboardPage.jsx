@@ -3,6 +3,29 @@ import SideBar from '../componentes/navegacion/sidebar';
 import Navbar from '../componentes/navegacion/navbar';
 import ModeloService from '../servicios/modeloService';
 import CurvaROC from '../componentes/CurvaRoc';
+import SuicidioPorGenero from '../componentes/SuicidioPorGenero';
+import EstratoSocioeconomicoChart from '../componentes/EstratoSocioeconomicoChart';
+import {
+    Chart as ChartJS,
+    ArcElement,
+    Tooltip,
+    Legend,
+    CategoryScale,
+    LinearScale,
+    Title
+} from 'chart.js';
+import { Pie } from 'react-chartjs-2';
+
+// Registrar elementos necesarios
+ChartJS.register(
+    ArcElement,
+    Tooltip,
+    Legend,
+    CategoryScale,
+    LinearScale,
+    Title
+);
+
 
 const DashboardPage = () => {
 
@@ -12,6 +35,7 @@ const DashboardPage = () => {
 
     const [estadisticas, setEstadisticas] = useState(null);
     const [error, setError] = useState(null);
+    const [stats, setStats] = useState(null);
 
     useEffect(() => {
         const cargarEstadisticas = async () => {
@@ -23,6 +47,16 @@ const DashboardPage = () => {
             }
         };
 
+        const cargarPredicciones = async () => {
+            try {
+                const response = await ModeloService.obtenerPredicciones();
+                setStats(response.stats);
+            } catch (error) {
+                setError('Error al cargar predicciones: ' + error.message);
+            }
+        };
+
+        cargarPredicciones();
         cargarEstadisticas();
     }, []);
 
@@ -30,9 +64,30 @@ const DashboardPage = () => {
         return <p>{error}</p>;
     }
 
-    if (!estadisticas) {
-        return <p>Cargando estadísticas...</p>;
+    if (!stats || !estadisticas) {
+        return <p>Cargando Datos...</p>;
     }
+
+    const prediccionData = {
+        labels: Object.keys(stats.prediccion),
+        datasets: [
+            {
+                data: Object.values(stats.prediccion),
+                backgroundColor: ['#FF6384', '#36A2EB']
+            }
+        ]
+    };
+
+    const generoData = {
+        labels: Object.keys(stats.genero),
+        datasets: [
+            {
+                data: Object.values(stats.genero),
+                backgroundColor: ['#FF6384', '#FFCE56']
+            }
+        ]
+    };
+
 
     return (
         <>
@@ -41,85 +96,91 @@ const DashboardPage = () => {
                 <div className='w-full'>
                     <Navbar titulo={'Bienvenid@'} />
                     <div className="ml-60 mt-40 bg-white h-screen p-8">
-                        <div className="flex flex-wrap gap-4 w-full mt-6">
-
-                            <div className="bg-white rounded-lg w-[32%] mb-6 shadow-md h-full">
-                                <div className="p-6 w-[100%] h-[70%] border-b rounded-t-lg">
-                                    <div className="relative">
-                                        {estadisticas && estadisticas.confusion_matrix && (
-                                            <div>
-                                                <h2 className="text-center text-xl font-bold">Matriz de Confusión</h2>
-                                                <table className="table-auto border-collapse border border-gray-400 mx-auto">
-                                                    <thead>
-                                                        <tr>
-                                                            <th></th>
-                                                            {estadisticas.confusion_matrix.columns.map((col, index) => (
-                                                                <th key={index} className="border px-4 py-2">{col}</th>
+                        <div className="p-8 w-full min-h-screen">
+                            {/* Container con márgenes ajustados */}
+                            <div className="max-w-7xl mx-auto space-y-6">
+                                {/* Fila 1: Matriz de Confusión y Curva ROC */}
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    {/* Matriz de Confusión */}
+                                    <div className="bg-white rounded-lg shadow-md p-6">
+                                        <h2 className="text-xl font-bold mb-4 text-center">Matriz de Confusión</h2>
+                                        <div className="overflow-x-auto">
+                                            <table className="w-full table-auto border-collapse border border-gray-300">
+                                                <thead>
+                                                    <tr>
+                                                        <th className="border px-3 py-2"></th>
+                                                        {estadisticas.confusion_matrix.columns.map((col, index) => (
+                                                            <th key={index} className="border px-3 py-2">{col}</th>
+                                                        ))}
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {estadisticas.confusion_matrix.data.map((row, rowIndex) => (
+                                                        <tr key={rowIndex}>
+                                                            <td className="border px-3 py-2">{estadisticas.confusion_matrix.index[rowIndex]}</td>
+                                                            {row.map((cell, cellIndex) => (
+                                                                <td key={cellIndex} className="border px-3 py-2 text-center">{cell}</td>
                                                             ))}
                                                         </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        {estadisticas.confusion_matrix.data.map((row, rowIndex) => (
-                                                            <tr key={rowIndex}>
-                                                                <td className="border px-4 py-2">{estadisticas.confusion_matrix.index[rowIndex]}</td>
-                                                                {row.map((cell, cellIndex) => (
-                                                                    <td key={cellIndex} className="border px-4 py-2">{cell}</td>
-                                                                ))}
-                                                            </tr>
-                                                        ))}
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        )}
+                                                    ))}
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
 
-
-                            <div className="bg-white rounded-lg w-[32%] mb-6 shadow-md h-full">
-                                <div className="p-6 w-[100%] h-[70%] border-b rounded-t-lg">
-                                    <CurvaROC rocData={estadisticas.roc_curve} />
-                                </div>
-                            </div>
-
-                            <div className="bg-white rounded-lg w-[32%] mb-6 shadow-md h-full">
-                                <div className="p-6 w-[100%] h-[70%] border-b rounded-t-lg">
-                                    <div className="relative">
-                                        <div className="flex flex-col text-lg">
-                                            <p className="text-xl font-bold text-center">Tipo de persona</p>
+                                    {/* Curva ROC */}
+                                    <div className="bg-white rounded-lg shadow-md p-6">
+                                        <div className="h-64">
+                                            <CurvaROC rocData={estadisticas.roc_curve} />
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
 
-                        <div className="flex flex-wrap gap-4 w-full mt-6">
-                            <div className="bg-white p-6 rounded-lg shadow-lg w-full md:w-[49%] max-w-full mb-6">
-                                <h3 className="text-2xl font-bold mb-4 text-center">Cantidad de entrenamientos</h3>
-                            </div>
-
-                            <div className="bg-white p-6 rounded-lg shadow-md w-[49%] mb-6 h-full">
-                                <h3 className="text-2xl font-bold mb-4 text-center">Últimos entrenamientos</h3>
-                                <div className="overflow-x-auto text-center">
-                                    <div className="flex mb-2">
-                                        <div className="px-4 py-2 text-lg font-semibold w-1/3">Fecha</div>
-                                        <div className="px-4 py-2 text-lg font-semibold w-1/3">Base de datos</div>
-                                        <div className="px-4 py-2 text-lg font-semibold w-1/3">Descargar</div>
+                                {/* Fila 2: Predicciones y Tipo de Persona */}
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    {/* Predicciones */}
+                                    <div className="bg-white rounded-lg shadow-md p-6">
+                                        <h3 className="text-xl font-bold mb-4 text-center">Predicciones</h3>
+                                        <div className="h-64">
+                                            <Pie
+                                                data={prediccionData}
+                                                options={{
+                                                    maintainAspectRatio: false,
+                                                    responsive: true
+                                                }}
+                                            />
+                                        </div>
                                     </div>
 
-                                    <div className="flex mb-4 border rounded-lg w-11/12 mx-auto items-center">
-                                        <div className="px-4 py-2 text-lg w-1/3">27/12/2024</div>
-                                        <div className="px-4 py-2 w-1/3">Encuestas</div>
-                                        <div className="px-4 py-2 w-1/3">
-                                            <button className="px-2 hover:bg-gray-100 ml-10">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24"
-                                                    fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
-                                                    className="lucide lucide-square-arrow-down">
-                                                    <rect width="18" height="18" x="3" y="3" rx="2" />
-                                                    <path d="M12 8v8" />
-                                                    <path d="m8 12 4 4 4-4" />
-                                                </svg>
-                                            </button>
+                                    {/* Tipo de Persona */}
+                                    <div className="bg-white rounded-lg shadow-md p-6">
+                                        <h3 className="text-xl font-bold mb-4 text-center">Tipo de Persona</h3>
+                                        <div className="h-64">
+                                            <Pie
+                                                data={generoData}
+                                                options={{
+                                                    maintainAspectRatio: false,
+                                                    responsive: true
+                                                }}
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Fila 3: Predicciones y Tipo de Persona */}
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    {/* Predicciones */}
+                                    <div className="bg-white rounded-lg shadow-md p-6">
+                                        <div className="h-64">
+                                        <SuicidioPorGenero data={stats.tasa_suicidio_genero} />
+
+                                        </div>
+                                    </div>
+
+                                    {/* Tipo de Persona */}
+                                    <div className="bg-white rounded-lg shadow-md p-6">
+                                        <div className="h-64">
+                                        <EstratoSocioeconomicoChart data={stats.estrato} />
                                         </div>
                                     </div>
                                 </div>

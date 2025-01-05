@@ -1,5 +1,5 @@
 import axios from 'axios';
-import env from '../environment/env'; 
+import env from '../environment/env';
 
 const ModeloService = {
     // Obtener las importancias de las características
@@ -23,6 +23,13 @@ const ModeloService = {
             throw error; // Lanza el error para manejarlo en la vista
         }
     },
+
+
+    obtenerPredicciones: async () => {
+        const response = await axios.get(`${env.api_url}/generate-predictions`);
+        return response.data;
+    },
+
 };
 
 export default ModeloService;

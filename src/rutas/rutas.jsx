@@ -8,6 +8,7 @@ import RegistroPage from '../pages/RegistroPage';
 import DashboardPage from '../pages/DashboardPage';
 import CargarDatosPage from '../pages/CargarDatosPage';
 import UsuariosPage from '../pages/UsuariosPage';
+import PrediccionesPage from '../pages/PrediccionesPage';
 // proteccion de ruta
 import RutaProtegida from '../seguridad/rutaProtegida';
 
@@ -22,6 +23,7 @@ const AppRoutes = () => {
 
                 <Route element={<RutaProtegida />} >
                     <Route path="/dashboard" element={<DashboardPage />} />
+                    <Route path="/predicciones" element={<PrediccionesPage />} />
                     <Route path="/cargar-datos" element={<CargarDatosPage />} />
                     <Route path="/usuarios" element={<UsuariosPage />} />
                 </Route>
