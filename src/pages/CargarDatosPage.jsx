@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import Navbar from "../componentes/navegacion/navbar";
 import SideBar from "../componentes/navegacion/sidebar";
+import modeloService from '../servicios/modeloService';
 
 import subir from '../assets/imagenes/subir.webp';
 
@@ -15,6 +16,36 @@ const CargarDatosPage = () => {
             fileInputRef.current.click(); // Abre el explorador de archivos
         }
     };
+
+    const [file, setFile] = useState(null);
+    const [error, setError] = useState('');
+    const [predicciones, setPredicciones] = useState([]);
+
+    const handleFileChange = (event) => {
+        setFile(event.target.files[0]);
+    };
+
+    const handleUpload = async () => {
+        if (!file) {
+            setError('Por favor, selecciona un archivo.');
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('file', file);
+
+        try {
+            console.log('Subiendo archivo:', file);
+            const response = await modeloService.cargarCsv(formData);
+            console.log('Respuesta del servidor:', response.data);
+            setPredicciones(response.data.predicciones);
+            setError('');
+        } catch (error) {
+            console.error('Error al procesar el archivo:', error);
+            setError('Error al procesar el archivo. ' + error.message);
+        }
+    };
+
     return (
         <>
             <div className="flex m-0 p-0">
@@ -30,11 +61,54 @@ const CargarDatosPage = () => {
                                 Cargue un documento<br />Excel
                             </p>
                         </div>
-                        <button className="mt-4 px-6 py-1 bg-[#2B6CB0] text-white text-lg rounded-lg hover:bg-[#125fb0]" onClick={handleFileClick}>
-                            Cargar
+                        <button
+                            className="mt-4 px-6 py-1 bg-[#2B6CB0] text-white text-lg rounded-lg hover:bg-[#125fb0]"
+                            onClick={handleUpload}
+                        >
+                            Subir y Procesar
                         </button>
-                        <input type="file" ref={fileInputRef} className="hidden"
+
+                        <input
+                            type="file"
+                            ref={fileInputRef}
+                            className="hidden"
+                            onChange={handleFileChange}
                         />
+
+
+                        {/* Sección para cargar CSV */}
+                        <div>
+
+                            {predicciones.length > 0 && (
+                                <div>
+                                    <h3>Predicciones</h3>
+                                    <table border="1">
+                                        <thead>
+                                            <tr>
+                                                <th>Edad</th>
+                                                <th>Sexo Biológico</th>
+                                                <th>Escolaridad</th>
+                                                <th>Estrato</th>
+                                                <th>Predicción</th>
+                                                <th>Probabilidad</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {predicciones.map((pred, index) => (
+                                                <tr key={index}>
+                                                    <td>{pred.EDAD}</td>
+                                                    <td>{pred.SEXO_BIOLOGICO}</td>
+                                                    <td>{pred.ESCOLARIDAD}</td>
+                                                    <td>{pred.ESTRATO_SOCIOECONOMICO}</td>
+                                                    <td>{pred.Prediccion}</td>
+                                                    <td>{pred.Probabilidad_Clase_1}</td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            )}
+                        </div>
                     </div>
                 </div>
             </div>

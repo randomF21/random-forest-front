@@ -30,6 +30,14 @@ const ModeloService = {
         return response.data;
     },
 
+    cargarCsv: (formData) => {
+        return axios.post(`${env.api_url}/cargar-csv/`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+    },
+
 };
 
 export default ModeloService;
