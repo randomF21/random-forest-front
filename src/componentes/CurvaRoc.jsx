@@ -23,9 +23,10 @@ ChartJS.register(
 );
 
 const CurvaROC = ({ rocData }) => {
-    if (!rocData) {
+    if (!rocData || !rocData.fpr || !rocData.tpr) {
         return <p>Cargando curva ROC...</p>;
     }
+
 
     const data = {
         labels: rocData.fpr, // FPR como etiquetas del eje X

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { logout } from '../../servicios/LoginService';
-import { Cpu, Dumbbell, Eye, FolderUp, House, LogOut, NotepadText, Settings, UserRound, Users } from 'lucide-react';
+import { Cpu, Dumbbell, Eye, FolderUp, House, LogOut, NotepadText, Settings, UserRound, Users, BookOpenText  } from 'lucide-react';
 
 const SideBar = ({ ruta_foto, nombreUsuario, rol }) => {
     // variable para movilizacion dentro del dashboard

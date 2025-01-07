@@ -21,6 +21,10 @@ ChartJS.register(
 );
 
 const SuicidioPorGenero = ({ data }) => {
+    if (!data || typeof data !== 'object') {
+        return <div>No hay datos disponibles</div>;
+      }
+      
     const chartData = {
         labels: Object.keys(data), // Etiquetas (géneros)
         datasets: [

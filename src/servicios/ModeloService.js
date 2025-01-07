@@ -25,7 +25,7 @@ const ModeloService = {
     },
 
 
-    obtenerPredicciones: async () => {
+    obtenerPrediccionesModeloEntrenado: async () => {
         const response = await axios.get(`${env.api_url}/generate-predictions`);
         return response.data;
     },
@@ -37,6 +37,27 @@ const ModeloService = {
             },
         });
     },
+
+    cargarPredicciones: async () => {
+        try {
+            const response = await axios.get(`${env.api_url}/cargar-predicciones`);
+            return response;
+        } catch (error) {
+            console.log('Error obteniendo predicciones: ', error);
+            throw error;
+        }
+    },
+
+    cargarFechasPredicciones: async () => {
+        const response = await axios.get(`${env.api_url}/fechas-predicciones`);
+        return response.data;
+    },
+
+    // Este método ahora solo se usa cuando se selecciona una fecha
+    cargarPredicciones: async (fecha) => {
+        const response = await axios.get(`${env.api_url}/cargar-predicciones/?fecha=${fecha}`);
+        return response.data;
+    }
 
 };
 

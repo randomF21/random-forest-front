@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import SideBar from '../componentes/navegacion/sidebar';
-import Navbar from '../componentes/navegacion/navbar';
-import ModeloService from '../servicios/modeloService';
-import CurvaROC from '../componentes/CurvaRoc';
-import SuicidioPorGenero from '../componentes/SuicidioPorGenero';
-import EstratoSocioeconomicoChart from '../componentes/EstratoSocioeconomicoChart';
+import React, { useState, useEffect } from "react";
+import SideBar from "../componentes/navegacion/sidebar";
+import Navbar from "../componentes/navegacion/navbar";
+import ModeloService from "../servicios/modeloService";
+import CurvaROC from "../componentes/CurvaRoc";
+import SuicidioPorGenero from "../componentes/SuicidioPorGenero";
+import EstratoSocioeconomicoChart from "../componentes/EstratoSocioeconomicoChart";
 import {
     Chart as ChartJS,
     ArcElement,
@@ -12,9 +12,9 @@ import {
     Legend,
     CategoryScale,
     LinearScale,
-    Title
-} from 'chart.js';
-import { Pie } from 'react-chartjs-2';
+    Title,
+} from "chart.js";
+import { Pie } from "react-chartjs-2";
 
 // Registrar elementos necesarios
 ChartJS.register(
@@ -26,79 +26,127 @@ ChartJS.register(
     Title
 );
 
-
 const DashboardPage = () => {
-
-    const user = JSON.parse(sessionStorage.getItem('usuario')); // Suponiendo que guardas un objeto con los datos del usuario 
+    const user = JSON.parse(sessionStorage.getItem("usuario")); // Suponiendo que guardas un objeto con los datos del usuario
     const { rol, nombre, apellido } = user;
-    const nombreCompleto = `${nombre} ${apellido}`; // Se utiliza para dar el espacio entre el nombre y el apellido
+    const nombreCompleto = `${nombre} ${apellido}`;
 
-    const [estadisticas, setEstadisticas] = useState(null);
-    const [error, setError] = useState(null);
     const [stats, setStats] = useState(null);
+    const [estadisticas, setEstadisticas] = useState(null);
+    const [rocData, setRocData] = useState(null);
+    const [confusionMatrix, setConfusionMatrix] = useState(null);
+    const [fechas, setFechas] = useState([]);
+    const [fechaSeleccionada, setFechaSeleccionada] = useState(null);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
-        const cargarEstadisticas = async () => {
+        const cargarDatosIniciales = async () => {
             try {
-                const data = await ModeloService.obtenerEstadisticas();
-                setEstadisticas(data); // Guarda las estadísticas en el estado
+                // Obtener estadísticas iniciales del modelo entrenado
+                const responseEntrenamiento = await ModeloService.obtenerEstadisticas();
+                setConfusionMatrix(responseEntrenamiento.confusion_matrix);
+                setRocData(responseEntrenamiento.roc_curve);
+                
+                // Obtener las estadísticas iniciales del modelo
+                const responseModelo = await ModeloService.obtenerPrediccionesModeloEntrenado();
+                setStats(responseModelo);
+                setEstadisticas(responseModelo.stats);
+
+                // Obtener solo el listado de fechas disponibles
+                const responseFechas = await ModeloService.cargarFechasPredicciones();
+                setFechas(responseFechas.fechas_disponibles || []);
             } catch (error) {
-                setError('Error al cargar estadísticas del modelo');
+                setError("Error al cargar estadísticas iniciales: " + error.message);
             }
         };
 
-        const cargarPredicciones = async () => {
-            try {
-                const response = await ModeloService.obtenerPredicciones();
-                setStats(response.stats);
-            } catch (error) {
-                setError('Error al cargar predicciones: ' + error.message);
-            }
-        };
-
-        cargarPredicciones();
-        cargarEstadisticas();
+        cargarDatosIniciales();
     }, []);
+
+    const handleFechaChange = async (e) => {
+        const fecha = e.target.value;
+        setFechaSeleccionada(fecha);
+
+        try {
+            if (!fecha) {
+                // Volver a las estadísticas del modelo entrenado
+                const responseModelo = await ModeloService.obtenerPrediccionesModeloEntrenado();
+                setStats(responseModelo);
+                setEstadisticas(responseModelo.stats);
+                 // Actualizar matriz de confusión y curva ROC con datos originales
+                 const responseEntrenamiento = await ModeloService.obtenerEstadisticas();
+                 setConfusionMatrix(responseEntrenamiento.confusion_matrix);
+                 setRocData(responseEntrenamiento.roc_curve);
+                 
+            } else {
+                // Solo cargar predicciones cuando se selecciona una fecha
+                const responsePredicciones = await ModeloService.cargarPredicciones(fecha);
+                setStats(responsePredicciones.data);
+                setEstadisticas(responsePredicciones.stats);
+            }
+        } catch (error) {
+            setError(`Error al cargar estadísticas: ${error.message}`);
+        }
+    };
 
     if (error) {
         return <p>{error}</p>;
     }
 
-    if (!stats || !estadisticas) {
-        return <p>Cargando Datos...</p>;
+    if (!stats || !rocData) {
+        return <p>Cargando datos...</p>;
     }
 
+
+
     const prediccionData = {
-        labels: Object.keys(stats.prediccion),
+        labels: Object.keys(estadisticas.prediccion),
         datasets: [
             {
-                data: Object.values(stats.prediccion),
-                backgroundColor: ['#FF6384', '#36A2EB']
-            }
-        ]
+                data: Object.values(estadisticas.prediccion),
+                backgroundColor: ["#FF6384", "#36A2EB"],
+            },
+        ],
     };
 
     const generoData = {
-        labels: Object.keys(stats.genero),
+        labels: Object.keys(estadisticas.genero),
         datasets: [
             {
-                data: Object.values(stats.genero),
-                backgroundColor: ['#FF6384', '#FFCE56']
-            }
-        ]
+                data: Object.values(estadisticas.genero),
+                backgroundColor: ["#FF6384", "#FFCE56"],
+            },
+        ],
     };
-
 
     return (
         <>
             <div className="flex m-0 p-0">
                 <SideBar ruta_foto="https://picsum.photos/200" nombreUsuario={nombreCompleto} rol={rol} />
-                <div className='w-full'>
-                    <Navbar titulo={'Bienvenid@'} />
+                <div className="w-full">
+                    <Navbar titulo={"Bienvenid@"} />
                     <div className="ml-60 mt-40 bg-white h-screen p-8">
                         <div className="p-8 w-full min-h-screen">
-                            {/* Container con márgenes ajustados */}
                             <div className="max-w-7xl mx-auto space-y-6">
+                                {/* Select para fechas */}
+                                <div className="mb-4">
+                                    <label htmlFor="fechas" className="block text-lg font-bold mb-2">
+                                        Seleccione una fecha para ver las estadísticas:
+                                    </label>
+                                    <select
+                                        id="fechas"
+                                        className="border rounded-lg p-2 w-full"
+                                        onChange={handleFechaChange}
+                                    >
+                                        <option value="">Datos de Entrenamiento</option>
+                                        {fechas.map((fecha, index) => (
+                                            <option key={index} value={fecha}>
+                                                {fecha}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+
                                 {/* Fila 1: Matriz de Confusión y Curva ROC */}
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     {/* Matriz de Confusión */}
@@ -109,17 +157,26 @@ const DashboardPage = () => {
                                                 <thead>
                                                     <tr>
                                                         <th className="border px-3 py-2"></th>
-                                                        {estadisticas.confusion_matrix.columns.map((col, index) => (
-                                                            <th key={index} className="border px-3 py-2">{col}</th>
+                                                        {confusionMatrix.columns.map((col, index) => (
+                                                            <th key={index} className="border px-3 py-2">
+                                                                {col}
+                                                            </th>
                                                         ))}
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    {estadisticas.confusion_matrix.data.map((row, rowIndex) => (
+                                                    {confusionMatrix.data.map((row, rowIndex) => (
                                                         <tr key={rowIndex}>
-                                                            <td className="border px-3 py-2">{estadisticas.confusion_matrix.index[rowIndex]}</td>
+                                                            <td className="border px-3 py-2">
+                                                                {confusionMatrix.index[rowIndex]}
+                                                            </td>
                                                             {row.map((cell, cellIndex) => (
-                                                                <td key={cellIndex} className="border px-3 py-2 text-center">{cell}</td>
+                                                                <td
+                                                                    key={cellIndex}
+                                                                    className="border px-3 py-2 text-center"
+                                                                >
+                                                                    {cell}
+                                                                </td>
                                                             ))}
                                                         </tr>
                                                     ))}
@@ -131,56 +188,39 @@ const DashboardPage = () => {
                                     {/* Curva ROC */}
                                     <div className="bg-white rounded-lg shadow-md p-6">
                                         <div className="h-64">
-                                            <CurvaROC rocData={estadisticas.roc_curve} />
+                                            <CurvaROC rocData={rocData} />
                                         </div>
                                     </div>
                                 </div>
 
-                                {/* Fila 2: Predicciones y Tipo de Persona */}
+                                {/* Fila 2: Gráficas de predicciones */}
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    {/* Predicciones */}
                                     <div className="bg-white rounded-lg shadow-md p-6">
                                         <h3 className="text-xl font-bold mb-4 text-center">Predicciones</h3>
                                         <div className="h-64">
-                                            <Pie
-                                                data={prediccionData}
-                                                options={{
-                                                    maintainAspectRatio: false,
-                                                    responsive: true
-                                                }}
-                                            />
+                                            <Pie data={prediccionData} options={{ maintainAspectRatio: false }} />
                                         </div>
                                     </div>
 
-                                    {/* Tipo de Persona */}
                                     <div className="bg-white rounded-lg shadow-md p-6">
                                         <h3 className="text-xl font-bold mb-4 text-center">Tipo de Persona</h3>
                                         <div className="h-64">
-                                            <Pie
-                                                data={generoData}
-                                                options={{
-                                                    maintainAspectRatio: false,
-                                                    responsive: true
-                                                }}
-                                            />
+                                            <Pie data={generoData} options={{ maintainAspectRatio: false }} />
                                         </div>
                                     </div>
                                 </div>
 
-                                {/* Fila 3: Predicciones y Tipo de Persona */}
+                                {/* Fila 3: Gráficas de predicciones */}
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    {/* Predicciones */}
                                     <div className="bg-white rounded-lg shadow-md p-6">
                                         <div className="h-64">
-                                        <SuicidioPorGenero data={stats.tasa_suicidio_genero} />
-
+                                            <SuicidioPorGenero data={estadisticas.tasa_suicidio_genero} />
                                         </div>
                                     </div>
 
-                                    {/* Tipo de Persona */}
                                     <div className="bg-white rounded-lg shadow-md p-6">
                                         <div className="h-64">
-                                        <EstratoSocioeconomicoChart data={stats.estrato} />
+                                            <EstratoSocioeconomicoChart data={estadisticas.estrato} />
                                         </div>
                                     </div>
                                 </div>
