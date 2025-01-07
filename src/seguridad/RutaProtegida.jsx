@@ -4,7 +4,6 @@ import { Navigate, Outlet } from 'react-router-dom';
 const RutaProtegida = ({ rolesPermitidos  = [] }) => {
     const token = sessionStorage.getItem("token");
     const usuario = JSON.parse(sessionStorage.getItem('usuario'));
-    
 
     // Verificar si hay un token válido
     if (!token || !usuario) {
@@ -15,7 +14,7 @@ const RutaProtegida = ({ rolesPermitidos  = [] }) => {
     // Verificar si el rol del usuario está permitido
     if (!rolesPermitidos.includes(usuario.rol)) {
         console.error(`Acceso denegado para el rol: ${usuario.rol}`);
-        return <Navigate to="/" replace />;
+        return usuario.rol === 3 ? <Navigate to="/formulario" replace /> : <Navigate to="/" replace />;
     }
 
     // Si todo es válido, renderiza las rutas hijas
