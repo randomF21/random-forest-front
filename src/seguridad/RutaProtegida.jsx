@@ -1,35 +1,25 @@
-import { Navigate, Outlet } from "react-router-dom";
-import { jwtDecode } from "jwt-decode";
-import { AlertaService } from "../servicios/AlertaService";
+import React from 'react';
+import { Navigate, Outlet } from 'react-router-dom';
 
-// constante para validar 
-const RutaProtegida = () => {
-    // intentamos guardar el token
-    const token = sessionStorage.getItem('token');
-    // verificamos si existe
-    if(!token){
-        // sino existe mandamos alerta y redirigimos
-        AlertaService.custom("Token invalido");
-        return <Navigate to="/login" replace />
-    }
+const RutaProtegida = ({ rolesPermitidos  = [] }) => {
+    const token = sessionStorage.getItem("token");
+    const usuario = JSON.parse(sessionStorage.getItem('usuario'));
+    
 
-    try {
-        // Decodificar el token
-        const decodedToken = jwtDecode(token);
-        // Obtener la fecha de expiración
-        const currentTime = Date.now() / 1000; // Tiempo actual en segundos
-        if (decodedToken.exp < currentTime) {
-            // Token expirado, redirigir al login
-            return <Navigate to="/login" replace />;
-        }
-    } catch (error) {
-        console.error("Error al decodificar el token:", error);
-        AlertaService.custom("Token invalido");
+    // Verificar si hay un token válido
+    if (!token || !usuario) {
+        console.error("No hay token disponible o usuario no está autenticado.");
         return <Navigate to="/login" replace />;
     }
 
-    // retornamos esto si todo salio bien
+    // Verificar si el rol del usuario está permitido
+    if (!rolesPermitidos.includes(usuario.rol)) {
+        console.error(`Acceso denegado para el rol: ${usuario.rol}`);
+        return <Navigate to="/" replace />;
+    }
+
+    // Si todo es válido, renderiza las rutas hijas
     return <Outlet />;
-}
+};
 
 export default RutaProtegida;
