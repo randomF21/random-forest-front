@@ -27,8 +27,11 @@ ChartJS.register(
 );
 
 const DashboardPage = () => {
-    const user = JSON.parse(sessionStorage.getItem("usuario")); // Suponiendo que guardas un objeto con los datos del usuario
-    const { rol, nombre, apellido } = user;
+    const user = JSON.parse(sessionStorage.getItem('usuario'));
+    // asignamos que necesitamos de estos datos
+    const { rol, nombre, apellido, id, imagen } = user;
+    const ruta = imagen ? `http://127.0.0.1:8000/foto_user/${imagen}` : null;
+    //agrupamos nombre en una sola variable
     const nombreCompleto = `${nombre} ${apellido}`;
 
     const [stats, setStats] = useState(null);
@@ -122,9 +125,9 @@ const DashboardPage = () => {
     return (
         <>
             <div className="flex m-0 p-0">
-                <SideBar ruta_foto="https://picsum.photos/200" nombreUsuario={nombreCompleto} rol={rol} />
-                <div className="w-full">
-                    <Navbar titulo={"Bienvenid@"} />
+                <SideBar ruta_foto={ruta} nombreUsuario={nombreCompleto} rol={rol} />
+                <div className='w-full'>
+                    <Navbar titulo={'Bienvenid@'} />
                     <div className="ml-60 mt-40 bg-white h-screen p-8">
                         <div className="p-8 w-full min-h-screen">
                             <div className="max-w-7xl mx-auto space-y-6">

@@ -20,3 +20,32 @@ export function getUser() {
     const currentUser = identityJSON ? JSON.parse(identityJSON) : null;
     return currentUser;
 }
+
+// Método para obtener el objeto de usuario actual
+export function setUser(usuario) {
+    sessionStorage.removeItem('usuario')
+    sessionStorage.setItem('usuario', JSON.stringify(usuario));
+    return;
+}
+
+export function getAutorizacion() {
+    const token = getToken();
+    // configuramos el header para la autorizacion
+    return {
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+        }
+    };
+}
+
+export function getAutorizacionImg() {
+    const token = getToken();
+    // configuramos el header para la autorizacion
+    return {
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'multipart/form-data',
+        }
+    };
+}

@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { logout } from '../../servicios/LoginService';
-import { Cpu, Dumbbell, Eye, FolderUp, House, LogOut, NotepadText, Settings, UserRound, Users, BookOpenText  } from 'lucide-react';
+import { Cpu, Dumbbell, Eye, FolderUp, House, LogOut, NotepadText, Settings, UserRound, Users, Upload, BookOpenText  } from 'lucide-react';
+import { EditarImagen } from '../../servicios/UsuarioService';
+import { AlertaService } from '../../servicios/AlertaService';
 
-const SideBar = ({ ruta_foto, nombreUsuario, rol }) => {
+const SideBar = ({ ruta_foto, nombreUsuario, rol, id }) => {
     // variable para movilizacion dentro del dashboard
     const location = useLocation();
     // variable para enviar a funcion externa
@@ -12,16 +14,67 @@ const SideBar = ({ ruta_foto, nombreUsuario, rol }) => {
     const handleLogout = () => {
         logout(navigate); // Llamas a la función logout
     };
+
+    const [rutaFoto, setRutaFoto] = useState(ruta_foto); // Estado y cambio
+    const [hover, setHover] = useState(false); // Estado para mostrar/ocultar el ícono
+    const [selectedFile, setSelectedFile] = useState(null); // estado para el archivo
+
+    // metodo para enviar el archivo
+    const handleFileChange = async (e) => {
+        // variable para el archivo
+        const file = e.target.files[0];
+        //validacion
+        if (file) {
+            //comprobamos tipo de archivo
+            const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
+            if(!allowedTypes.includes(file.type)) {
+                AlertaService.error('Archivo invalido :/');
+                return;    
+            }
+            if(file.size > 2 * 1024 * 1024) {
+                AlertaService.error('Maximo 2MB por imagen :/');
+                return;
+            }
+            setSelectedFile(file); // Guarda el archivo seleccionado
+        }
+        const cambiarImagen = await EditarImagen(file, id);
+        if(cambiarImagen) {
+            const nuevaRuta = URL.createObjectURL(file); // Genera una URL temporal para la imagen seleccionada
+            setRutaFoto(nuevaRuta);
+            //window.location.reload();
+        }
+    };
+    
     return (
         <div className="w-60 fixed top-0 left-0 h-screen flex flex-col items-center p-4 bg-[#1B4C80] text-white z-20">
             {/* Imagen circular */}
-            <div className="w-24 h-24 bg-gray-200 rounded-full mb-4 flex items-center justify-center">
+            <div className="w-24 h-24 bg-gray-200 rounded-full mb-4 flex items-center justify-center relative"
+                onMouseEnter={() => setHover(true)}
+                onMouseLeave={() => setHover(false)}
+            >
                 {/* validamos si viene una imagen, si viene la colocamos, si NO viene se colcoa una por defecto*/}
                 {ruta_foto ? (
-                    <img src={ruta_foto} alt="Perfil" className="w-full h-full object-cover rounded-full" />
+                    <img src={rutaFoto} alt="Perfil" className="w-full h-full object-cover rounded-full" />
                 ) : (
                     <UserRound size={85} color='black' className='mb-2' />
                 )}
+
+                {/* Ícono de subida que aparece al hover */}
+                {hover && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-20 rounded-full">
+                        <label htmlFor="file-upload" className="cursor-pointer">
+                        <Upload size={24} color="white" />
+                        </label>
+                        <input
+                        id="file-upload"
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        onChange={handleFileChange}
+                        />
+                    </div>
+                )}
+
             </div>
 
             {/* Texto debajo de la imagen */}

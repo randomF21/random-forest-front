@@ -1,29 +1,82 @@
 import Navbar from "../componentes/navegacion/navbar";
 import SideBar from "../componentes/navegacion/sidebar";
 import AgregarUsuarioModal from "../componentes/modal/AgregarUsuario";
+import { TraerUsuario } from "../servicios/UsuarioService";
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import ReactPaginate from "react-paginate";
 import { Trash2, UserPen } from "lucide-react";
 
 const UsuariosPage = () => {
-    const user = JSON.parse(sessionStorage.getItem('usuario')); // Suponiendo que guardas un objeto con los datos del usuario 
-    const { rol, nombre, apellido } = user;
-    const nombreCompleto = `${nombre} ${apellido}`; // Se utiliza para dar el espacio entre el nombre y el apellido
-
+    // guardamos los datos en una varible
+    const user = JSON.parse(sessionStorage.getItem('usuario'));
+    // asignamos que necesitamos de estos datos
+    const { rol, nombre, apellido, id, imagen } = user;
+    const ruta = imagen ? `http://127.0.0.1:8000/foto_user/${imagen}` : null;
+    //agrupamos nombre en una sola variable
+    const nombreCompleto = `${nombre} ${apellido}`;
+    // definimos y alternamos el estado de la modal
     const [isModalOpen, setIsModalOpen] = useState(false);
-
+    // funcion para abrir
     const openModal = () => {
         setIsModalOpen(true);
     };
-    
+    // funcion para cerrar
     const closeModal = () => {
         setIsModalOpen(false);
     };
 
+    // definimos variables para la coleccion de usuarios
+    const [usuario, setUsuario] = useState([]);
+
+    useEffect(() => {
+        const buscarUsuario = async () => {
+            try {
+                const usuariosData = await TraerUsuario();
+                setUsuario(usuariosData.data);
+            } catch (error) {
+                console.error('Error al traer los usuarios', error);
+            }
+        };
+        buscarUsuario();
+    }, []);
+
+    const asignarNombreRol = (rol) => {
+        switch (rol){
+            case 1: 
+                return "Superadmin";
+            case 2: 
+                return "Administrador";
+            case 3: 
+                return "Usuario";
+            default: 
+                return "Sin rol";
+        }
+    }
+
+    // CONFIGURACION DE LA PAGINACION 
+    // Estado para la página actual
+    const [paginaActual, setPaginaActual] = useState(0);
+
+    // Número de usuarios por página
+    const usuariosPorPagina = 8;
+
+    // Manejo del cambio de página
+    const handlePageClick = (data) => {
+        setPaginaActual(data.selected); // Establece la página seleccionada
+    };
+
+    // Calcular los usuarios a mostrar en la página actual
+    const usuariosPagina = usuario.slice(
+        paginaActual * usuariosPorPagina,
+        (paginaActual + 1) * usuariosPorPagina
+    );
+
+
     return (
         <>
             <div className="flex m-0 p-0">
-                <SideBar ruta_foto="https://picsum.photos/200" nombreUsuario={nombreCompleto} rol={rol} />
+                <SideBar ruta_foto={ruta} nombreUsuario={nombreCompleto} rol={rol} id={id} />
                 <div className='w-full'>
                     <Navbar titulo={'Usuarios'} />
                     <div className="ml-60 mt-32 bg-white h-screen p-8">
@@ -41,28 +94,47 @@ const UsuariosPage = () => {
                                 {/* <div className="px-4 py-2 text-lg font-semibold w-1/3">Eliminar</div> */}
                             </div>
 
-                            <div className="flex mb-4 bg-[#F2F2F2] rounded-lg mx-auto items-center text-center">
-                                <div className="px-4 py-2 text-lg w-1/3">12345678</div>
-                                <div className="px-4 py-2 w-1/3">Maria Sierra</div>
-                                <div className="px-4 py-2 w-1/3">Administrador</div>
-                                {/* <div className="px-4 py-2 w-1/3">Inactivo</div> */}
-                                {/* <div className="px-4 py-2 w-1/3">
-                                    <button className="px-2 hover:bg-gray-100">
-                                        <UserPen size={24} />
-                                    </button>
-                                </div> */}
-                                {/* <div className="px-4 py-2 w-1/3">
-                                    <button className="px-2 hover:bg-gray-100">
-                                        <Trash2 size={24} />
-                                    </button>
-                                </div> */}
-                            </div>
+                            {/* Renderiza los usuarios */}
+                            {usuariosPagina.map((usuario) => (
+                                <div key={usuario.id} className="flex mb-4 bg-[#F2F2F2] rounded-lg mx-auto items-center text-center">
+                                    <div className="px-4 py-2 text-lg w-1/3 truncate" title={usuario.email} >{usuario.email}</div>
+                                    <div className="px-4 py-2 w-1/3 break-normal">{`${usuario.nombre} ${usuario.apellido}`}</div>
+                                    <div className="px-4 py-2 w-1/3 truncate">{ asignarNombreRol(usuario.rol)}</div>
+                                    <div className="px-4 py-2 w-1/3 truncate">{usuario.activo ? "Activo": "Inactivo"}</div>
+                                    <div className="px-4 py-2 w-1/3">
+                                        <button className="px-2 hover:bg-gray-100">
+                                            <UserPen size={24} />
+                                        </button>
+                                    </div>
+                                    <div className="px-4 py-2 w-1/3">
+                                        <button className="px-2 hover:bg-gray-100">
+                                            <Trash2 size={24} />
+                                        </button>
+                                    </div>
+                                </div>
+                            ))}
+
+                            {/* Paginación */}
+                            <ReactPaginate
+                                previousLabel={"Anterior"}
+                                nextLabel={"Siguiente"}
+                                breakLabel={"..."}
+                                pageCount={Math.ceil(usuario.length / usuariosPorPagina)} // Número total de páginas
+                                onPageChange={handlePageClick} // Actualiza la página cuando se hace clic
+                                containerClassName="flex justify-center items-center space-x-2 mt-4" // Centrado horizontal y espacio entre los elementos
+                                pageClassName="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-700 cursor-pointer" // Estilo de los botones de página
+                                previousClassName="px-4 py-2 bg-[#2B6CB0] text-white rounded-md hover:bg-blue-700 cursor-pointer" // Estilo del botón de "Anterior"
+                                nextClassName="px-4 py-2 bg-[#2B6CB0] text-white rounded-md hover:bg-blue-700 cursor-pointer" // Estilo del botón de "Siguiente"
+                                breakClassName="px-4 py-2 text-gray-500" // Estilo de los puntos suspensivos ("...")
+                                activeClassName="bg-blue-700 text-white" // Estilo de la página activa
+                            />
+
                         </div>
                     </div>
                 </div>
             </div>
             <AgregarUsuarioModal isOpen={isModalOpen} onClose={closeModal}>
-                
+
             </AgregarUsuarioModal>
         </>
     );
