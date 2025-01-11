@@ -203,7 +203,7 @@ const DashboardPage = () => {
                                     </div>
 
                                     <div className="bg-white rounded-lg shadow-md p-6">
-                                        <h3 className="text-xl font-bold mb-4 text-center">Tipo de Persona</h3>
+                                        <h3 className="text-xl font-bold mb-4 text-center">Genero</h3>
                                         <div className="h-64">
                                             <Pie data={generoData} options={{ maintainAspectRatio: false }} />
                                         </div>

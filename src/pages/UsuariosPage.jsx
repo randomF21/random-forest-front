@@ -36,26 +36,26 @@ const UsuariosPage = () => {
                                 <div className="px-4 py-2 text-lg font-semibold w-1/3">Usuario</div>
                                 <div className="px-4 py-2 text-lg font-semibold w-1/3">Nombre</div>
                                 <div className="px-4 py-2 text-lg font-semibold w-1/3">Rol</div>
-                                <div className="px-4 py-2 text-lg font-semibold w-1/3">Estado</div>
-                                <div className="px-4 py-2 text-lg font-semibold w-1/3">Editar</div>
-                                <div className="px-4 py-2 text-lg font-semibold w-1/3">Eliminar</div>
+                                {/* <div className="px-4 py-2 text-lg font-semibold w-1/3">Estado</div> */}
+                                {/* <div className="px-4 py-2 text-lg font-semibold w-1/3">Editar</div> */}
+                                {/* <div className="px-4 py-2 text-lg font-semibold w-1/3">Eliminar</div> */}
                             </div>
 
                             <div className="flex mb-4 bg-[#F2F2F2] rounded-lg mx-auto items-center text-center">
                                 <div className="px-4 py-2 text-lg w-1/3">12345678</div>
                                 <div className="px-4 py-2 w-1/3">Maria Sierra</div>
                                 <div className="px-4 py-2 w-1/3">Administrador</div>
-                                <div className="px-4 py-2 w-1/3">Inactivo</div>
-                                <div className="px-4 py-2 w-1/3">
+                                {/* <div className="px-4 py-2 w-1/3">Inactivo</div> */}
+                                {/* <div className="px-4 py-2 w-1/3">
                                     <button className="px-2 hover:bg-gray-100">
                                         <UserPen size={24} />
                                     </button>
-                                </div>
-                                <div className="px-4 py-2 w-1/3">
+                                </div> */}
+                                {/* <div className="px-4 py-2 w-1/3">
                                     <button className="px-2 hover:bg-gray-100">
                                         <Trash2 size={24} />
                                     </button>
-                                </div>
+                                </div> */}
                             </div>
                         </div>
                     </div>
