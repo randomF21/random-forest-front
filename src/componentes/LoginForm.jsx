@@ -96,15 +96,7 @@ const LoginForm = ({ onLogin }) => {
                     >
                         Iniciar sesión
                     </button>
-                    <p className="mt-6 text-center text-sm text-[#04103B]">
-                        ¿Sin cuenta?{" "}
-                        <a
-                            href="/registro"
-                            className="text-[#2B6CB0] hover:underline"
-                        >
-                            Crear una cuenta
-                        </a>
-                    </p>
+                    
                 </form>
             </div>
         </div>

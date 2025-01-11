@@ -98,19 +98,9 @@ const UsuariosPage = () => {
                             {usuariosPagina.map((usuario) => (
                                 <div key={usuario.id} className="flex mb-4 bg-[#F2F2F2] rounded-lg mx-auto items-center text-center">
                                     <div className="px-4 py-2 text-lg w-1/3 truncate" title={usuario.email} >{usuario.email}</div>
-                                    <div className="px-4 py-2 w-1/3 break-normal">{`${usuario.nombre} ${usuario.apellido}`}</div>
+                                    <div className="px-4 py-2 w-1/3 break-normal">{`${usuario.nombre}`}</div>
                                     <div className="px-4 py-2 w-1/3 truncate">{ asignarNombreRol(usuario.rol)}</div>
-                                    <div className="px-4 py-2 w-1/3 truncate">{usuario.activo ? "Activo": "Inactivo"}</div>
-                                    <div className="px-4 py-2 w-1/3">
-                                        <button className="px-2 hover:bg-gray-100">
-                                            <UserPen size={24} />
-                                        </button>
-                                    </div>
-                                    <div className="px-4 py-2 w-1/3">
-                                        <button className="px-2 hover:bg-gray-100">
-                                            <Trash2 size={24} />
-                                        </button>
-                                    </div>
+                                    
                                 </div>
                             ))}
 
