@@ -50,6 +50,37 @@ const PrediccionesTable = () => {
         }
     };
 
+    const handleDescargarExcel = async () => {
+        if(!fechaSeleccionada){
+            alert('Por favor, seleccione una fecha.');
+            return;
+        }
+        
+        try {
+            await ModeloService.descargarExcel(fechaSeleccionada);
+            alert('Archivo Excel descargado exitosamente.')
+        } catch (error) {
+            console.error('Error al descargar el archivo Excel:', error)
+            alert('Error al descargar el archivo Excel. Por favor, inténtelo de nuevo.');
+        }
+    };
+
+    const handleDescargarPDF = async () => {
+        if (!fechaSeleccionada) {
+            alert('Por favor, seleccione una fecha.');
+            return;
+        }
+    
+        try {
+            await ModeloService.descargarPDF(fechaSeleccionada);
+            alert('Archivo PDF descargado exitosamente.');
+        } catch (error) {
+            console.error('Error al descargar el archivo PDF:', error);
+            alert('Error al descargar el archivo PDF. Por favor, inténtelo de nuevo.');
+        }
+    };
+    
+
     if (error) {
         return <p>{error}</p>;
     }
@@ -76,20 +107,38 @@ const PrediccionesTable = () => {
                 <label htmlFor="fechas" className="block text-lg font-bold mb-2">
                     Seleccione una fecha:
                 </label>
-                <select
-                    id="fechas"
-                    className="border rounded-lg p-2 w-full"
-                    value={fechaSeleccionada}
-                    onChange={handleFechaChange}
-                >
-                    <option value="">Datos de Entrenamiento</option>
-                    {fechas.map((fecha, index) => (
-                        <option key={index} value={fecha}>
-                            {fecha}
-                        </option>
-                    ))}
-                </select>
+                <div className="flex items-center space-x-4">
+                    {/* Select para fechas */}
+                    <select
+                        id="fechas"
+                        className="border rounded-lg p-2 flex-grow"
+                        value={fechaSeleccionada}
+                        onChange={handleFechaChange}
+                    >
+                        <option value="">Datos de Entrenamiento</option>
+                        {fechas.map((fecha, index) => (
+                            <option key={index} value={fecha}>
+                                {fecha}
+                            </option>
+                        ))}
+                    </select>
+
+                    {/* Botones de descarga */}
+                    <button
+                        onClick={handleDescargarExcel}
+                        className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-700"
+                    >
+                        Descargar Excel
+                    </button>
+                    <button
+                        onClick={handleDescargarPDF}
+                        className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700"
+                    >
+                        Descargar PDF
+                    </button>
+                </div>
             </div>
+
 
             <div className="flex mb-2 text-center bg-gray-200 font-semibold">
                 <div className="px-4 py-2 w-1/6">Edad</div>

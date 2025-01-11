@@ -57,7 +57,54 @@ const ModeloService = {
     cargarPredicciones: async (fecha) => {
         const response = await axios.get(`${env.api_url}/cargar-predicciones/?fecha=${fecha}`);
         return response.data;
-    }
+    },
+
+    realizarPrediccion: async (datos) => {
+        return await axios.post(`${env.api_url}/realizar-prediccion`, datos);
+    },
+
+    descargarExcel: async (fecha) => {
+        try {
+            const response = await axios.get(`${env.api_url}/descargar-predicciones-excel`, {
+                params: { fecha },
+                responseType: 'blob', // Importante para manejar archivos binarios
+            });
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', `predicciones_${fecha || 'entrenamiento'}.xlsx`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        } catch (error) {
+            console.error('Error al descargar el archivo Excel:', error);
+            throw error;
+        }
+    },
+
+    descargarPDF: async (fecha) => {
+        try {
+            const response = await axios.get(`${env.api_url}/descargar-predicciones-pdf`, {
+                params: { fecha },
+                responseType: 'blob', // Específico para archivos binarios
+            });
+            if (response.status === 200) {
+                const url = window.URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }));
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', `predicciones_${fecha || 'entrenamiento'}.pdf`);
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            } else {
+                throw new Error('El servidor respondió con un estado inesperado.');
+            }
+        } catch (error) {
+            console.error('Error en el servicio de descarga de PDF:', error);
+            throw error;
+        }
+    },
+    
 
 };
 
