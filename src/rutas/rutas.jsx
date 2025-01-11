@@ -8,6 +8,8 @@ import RegistroPage from '../pages/RegistroPage';
 import DashboardPage from '../pages/DashboardPage';
 import CargarDatosPage from '../pages/CargarDatosPage';
 import UsuariosPage from '../pages/UsuariosPage';
+import PrediccionesPage from '../pages/PrediccionesPage';
+import FormularioPage from '../pages/FormularioPage';
 // proteccion de ruta
 import RutaProtegida from '../seguridad/rutaProtegida';
 
@@ -17,13 +19,18 @@ const AppRoutes = () => {
         <BrowserRouter>
             <Routes>
                 <Route path="/" element={<LandingPage />} />
-                <Route path="/login" element={<LoginPage />} /> 
+                <Route path="/login" element={<LoginPage />} />
                 <Route path="/registro" element={<RegistroPage />} />
 
-                <Route element={<RutaProtegida />} >
+                <Route element={<RutaProtegida rolesPermitidos={[1, 2]} />} >
                     <Route path="/dashboard" element={<DashboardPage />} />
+                    <Route path="/predicciones" element={<PrediccionesPage />} />
                     <Route path="/cargar-datos" element={<CargarDatosPage />} />
                     <Route path="/usuarios" element={<UsuariosPage />} />
+                </Route>
+
+                <Route element={<RutaProtegida rolesPermitidos={[3]} />} >
+                    <Route path="/formulario" element={<FormularioPage />} />
                 </Route>
 
             </Routes>

@@ -6,6 +6,8 @@ import { X, UserPlus } from 'lucide-react';
 import { InsertarUsuario } from '../../servicios/UsuarioService';
 import { AlertaService } from '../../servicios/AlertaService';
 
+import nuevo_usuario from '../../assets/imagenes/nuevo-usuario.webp';
+
 const AgregarUsuarioModal = ({ isOpen, onClose }) => {
 
     // Esquema de validación con Yup
@@ -40,23 +42,14 @@ const AgregarUsuarioModal = ({ isOpen, onClose }) => {
 
     // Función que se ejecuta al enviar el formulario
     const onSubmit = async (data) => {
-        
-        data = {
-            ...data,
-            apellido: 'apellido',
-            nacimiento: '2000-02-02',
-            num_documento: '1234567890',
-            telefono: '3214105263',
-            tipo_documento: 'Registro Civil'
-        }
 
-        try { 
-            const usuarioCreado = await InsertarUsuario(data); 
-            console.log("Usuario creado:", usuarioCreado); 
-            AlertaService.success("Usuario creado exitosamente."); 
-            onClose(); 
-        } catch (error) { 
-            AlertaService.error("Error al crear el usuario."); 
+        try {
+            const usuarioCreado = await InsertarUsuario(data);
+            console.log("Usuario creado:", usuarioCreado);
+            AlertaService.success("Usuario creado exitosamente.");
+            onClose();
+        } catch (error) {
+            AlertaService.error("Error al crear el usuario.");
         }
     };
 
@@ -72,24 +65,15 @@ const AgregarUsuarioModal = ({ isOpen, onClose }) => {
                     <X className="w-6 h-6" />
                 </button>
 
-                <div className="flex items-start space-x-8">
+                <div className="flex items-center space-x-8">
                     <div className="flex-1">
-                        <h2 className="text-2xl font-bold mb-6">Crear nuevo usuario</h2>
+                        <h2 className="text-3xl font-bold mb-6">Crear nuevo usuario</h2>
 
                         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-                            <div>
-                                <label className="block text-sm font-medium mb-1">Correo</label>
-                                <input
-                                    type="text"
-                                    {...register("email")}
-                                    placeholder="Ingresa el correo"
-                                    className="w-full p-2 border rounded-md"
-                                />
-                                <p className="text-red-600 text-sm">{errors.email?.message}</p>
-                            </div>
+
 
                             <div>
-                                <label className="block text-sm font-medium mb-1">Nombre</label>
+                                <label className="block text-lg font-medium mb-1">Nombre</label>
                                 <input
                                     type="text"
                                     {...register("nombre")}
@@ -100,7 +84,18 @@ const AgregarUsuarioModal = ({ isOpen, onClose }) => {
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium mb-1">Contraseña</label>
+                                <label className="block text-lg font-medium mb-1">Correo</label>
+                                <input
+                                    type="text"
+                                    {...register("email")}
+                                    placeholder="Ingresa el correo"
+                                    className="w-full p-2 border rounded-md"
+                                />
+                                <p className="text-red-600 text-sm">{errors.email?.message}</p>
+                            </div>
+
+                            <div>
+                                <label className="block text-lg font-medium mb-1">Contraseña</label>
                                 <input
                                     type="password"
                                     {...register("password")}
@@ -111,7 +106,7 @@ const AgregarUsuarioModal = ({ isOpen, onClose }) => {
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium mb-1">Confirmar contraseña</label>
+                                <label className="block text-lg font-medium mb-1">Confirmar contraseña</label>
                                 <input
                                     type="password"
                                     {...register("confirmarPassword")}
@@ -122,26 +117,28 @@ const AgregarUsuarioModal = ({ isOpen, onClose }) => {
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium mb-1">Rol</label>
+                                <label className="block text-lg font-medium mb-1">Rol</label>
                                 <select {...register("rol")} className="w-full p-2 border rounded-md">
                                     <option value="">Selecciona una opción</option>
                                     <option value="superadmin">Super administrador</option>
                                     <option value="admin">Administrador</option>
                                 </select>
-                                <p className="text-red-600 text-sm">{errors.rol?.message}</p>
+                                <p className="text-red-600 text-sm mb-4">{errors.rol?.message}</p>
                             </div>
 
-                            <button
-                                type="submit"
-                                className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700"
-                            >
-                                Crear usuario
-                            </button>
+                            <div className='flex justify-center'>
+                                <button
+                                    type="submit"
+                                    className="bg-[#2B6CB0] hover:bg-[#125fb0] text-white py-2 rounded-md w-7/12"
+                                >
+                                    Crear usuario
+                                </button>
+                            </div>
                         </form>
                     </div>
 
-                    <div className="pt-16">
-                        <UserPlus className="w-32 h-32 text-gray-800" />
+                    <div className="w-72">
+                        <img src={nuevo_usuario} alt="Nuevo Usuario" />
                     </div>
                 </div>
             </div>
