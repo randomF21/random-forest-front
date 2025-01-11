@@ -33,7 +33,7 @@ const UsuariosPage = () => {
                                 Crear nuevo usuario
                             </button>
                             <div className="flex mb-2 text-center">
-                                <div className="px-4 py-2 text-lg font-semibold w-1/3">Usuario</div>
+                                <div className="px-4 py-2 text-lg font-semibold w-1/3">Correo Electronico</div>
                                 <div className="px-4 py-2 text-lg font-semibold w-1/3">Nombre</div>
                                 <div className="px-4 py-2 text-lg font-semibold w-1/3">Rol</div>
                                 {/* <div className="px-4 py-2 text-lg font-semibold w-1/3">Estado</div> */}

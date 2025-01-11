@@ -43,15 +43,6 @@ const AgregarUsuarioModal = ({ isOpen, onClose }) => {
     // Función que se ejecuta al enviar el formulario
     const onSubmit = async (data) => {
 
-        data = {
-            ...data,
-            apellido: 'apellido',
-            nacimiento: '2000-02-02',
-            num_documento: '1234567890',
-            telefono: '3214105263',
-            tipo_documento: 'Registro Civil'
-        }
-
         try {
             const usuarioCreado = await InsertarUsuario(data);
             console.log("Usuario creado:", usuarioCreado);
@@ -79,16 +70,7 @@ const AgregarUsuarioModal = ({ isOpen, onClose }) => {
                         <h2 className="text-3xl font-bold mb-6">Crear nuevo usuario</h2>
 
                         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-                            <div>
-                                <label className="block text-lg font-medium mb-1">Correo</label>
-                                <input
-                                    type="text"
-                                    {...register("email")}
-                                    placeholder="Ingresa el correo"
-                                    className="w-full p-2 border rounded-md"
-                                />
-                                <p className="text-red-600 text-sm">{errors.email?.message}</p>
-                            </div>
+
 
                             <div>
                                 <label className="block text-lg font-medium mb-1">Nombre</label>
@@ -99,6 +81,17 @@ const AgregarUsuarioModal = ({ isOpen, onClose }) => {
                                     className="w-full p-2 border rounded-md"
                                 />
                                 <p className="text-red-600 text-sm">{errors.nombre?.message}</p>
+                            </div>
+
+                            <div>
+                                <label className="block text-lg font-medium mb-1">Correo</label>
+                                <input
+                                    type="text"
+                                    {...register("email")}
+                                    placeholder="Ingresa el correo"
+                                    className="w-full p-2 border rounded-md"
+                                />
+                                <p className="text-red-600 text-sm">{errors.email?.message}</p>
                             </div>
 
                             <div>
