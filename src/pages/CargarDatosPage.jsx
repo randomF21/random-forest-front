@@ -69,7 +69,7 @@ const CargarDatosPage = () => {
 
         try {
             console.log('Subiendo archivo:', file);
-            const response = await modeloService.cargarCsv(formData);
+            const response = await ModeloService.cargarCsv(formData);
             console.log('Respuesta del servidor:', response.data);
             setSuccessMessage('Archivo cargado y procesado con éxito.');
         } catch (error) {

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ModeloService from "../servicios/modeloService";
 import ReactPaginate from "react-paginate"; // Importar ReactPaginate
+import { AlertaService } from "../servicios/AlertaService";
 
 const PrediccionesTable = () => {
     const [predicciones, setPredicciones] = useState([]);
@@ -53,31 +54,31 @@ const PrediccionesTable = () => {
 
     const handleDescargarExcel = async () => {
         if (!fechaSeleccionada) {
-            alert('Por favor, seleccione una fecha.');
+            AlertaService.error('Por favor, seleccione una fecha.');
             return;
         }
 
         try {
             await ModeloService.descargarExcel(fechaSeleccionada);
-            alert('Archivo Excel descargado exitosamente.');
+            AlertaService.success('Archivo Excel descargado exitosamente.');
         } catch (error) {
             console.error('Error al descargar el archivo Excel:', error);
-            alert('Error al descargar el archivo Excel. Por favor, inténtelo de nuevo.');
+            AlertaService.error('Error al descargar el archivo Excel. Por favor, inténtelo de nuevo.');
         }
     };
 
     const handleDescargarPDF = async () => {
         if (!fechaSeleccionada) {
-            alert('Por favor, seleccione una fecha.');
+            AlertaService.error('Por favor, seleccione una fecha.');
             return;
         }
 
         try {
             await ModeloService.descargarPDF(fechaSeleccionada);
-            alert('Archivo PDF descargado exitosamente.');
+            AlertaService.success('Archivo PDF descargado exitosamente.');
         } catch (error) {
             console.error('Error al descargar el archivo PDF:', error);
-            alert('Error al descargar el archivo PDF. Por favor, inténtelo de nuevo.');
+            AlertaService.error('Error al descargar el archivo PDF. Por favor, inténtelo de nuevo.');
         }
     };
 
