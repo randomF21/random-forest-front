@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ModeloService from "../servicios/modeloService";
+import ReactPaginate from "react-paginate"; // Importar ReactPaginate
 
 const PrediccionesTable = () => {
     const [predicciones, setPredicciones] = useState([]);
@@ -51,16 +52,16 @@ const PrediccionesTable = () => {
     };
 
     const handleDescargarExcel = async () => {
-        if(!fechaSeleccionada){
+        if (!fechaSeleccionada) {
             alert('Por favor, seleccione una fecha.');
             return;
         }
-        
+
         try {
             await ModeloService.descargarExcel(fechaSeleccionada);
-            alert('Archivo Excel descargado exitosamente.')
+            alert('Archivo Excel descargado exitosamente.');
         } catch (error) {
-            console.error('Error al descargar el archivo Excel:', error)
+            console.error('Error al descargar el archivo Excel:', error);
             alert('Error al descargar el archivo Excel. Por favor, inténtelo de nuevo.');
         }
     };
@@ -70,7 +71,7 @@ const PrediccionesTable = () => {
             alert('Por favor, seleccione una fecha.');
             return;
         }
-    
+
         try {
             await ModeloService.descargarPDF(fechaSeleccionada);
             alert('Archivo PDF descargado exitosamente.');
@@ -79,7 +80,10 @@ const PrediccionesTable = () => {
             alert('Error al descargar el archivo PDF. Por favor, inténtelo de nuevo.');
         }
     };
-    
+
+    const handlePageClick = (data) => {
+        setCurrentPage(data.selected + 1); // ReactPaginate empieza en 0, así que sumamos 1
+    };
 
     if (error) {
         return <p>{error}</p>;
@@ -139,7 +143,6 @@ const PrediccionesTable = () => {
                 </div>
             </div>
 
-
             <div className="flex mb-2 text-center bg-gray-200 font-semibold">
                 <div className="px-4 py-2 w-1/6">Edad</div>
                 <div className="px-4 py-2 w-1/6">Sexo</div>
@@ -182,27 +185,21 @@ const PrediccionesTable = () => {
                 </div>
             ))}
 
-
-
-            <div className="flex justify-center mt-4">
-                <button
-                    className="px-4 py-2 mx-1 bg-gray-300 rounded hover:bg-gray-400"
-                    onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-                    disabled={currentPage === 1}
-                >
-                    Anterior
-                </button>
-                <span className="px-4 py-2">
-                    Página {currentPage} de {totalPages}
-                </span>
-                <button
-                    className="px-4 py-2 mx-1 bg-gray-300 rounded hover:bg-gray-400"
-                    onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-                    disabled={currentPage === totalPages}
-                >
-                    Siguiente
-                </button>
-            </div>
+            {/* Paginación con ReactPaginate */}
+            <ReactPaginate
+                previousLabel={"Anterior"}
+                nextLabel={"Siguiente"}
+                breakLabel={"..."}
+                pageCount={totalPages}
+                onPageChange={handlePageClick}
+                forcePage={currentPage - 1} // Ajusta la página actual (ReactPaginate empieza en 0)
+                containerClassName="flex justify-center items-center space-x-2 mt-4"
+                pageClassName="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-700 cursor-pointer"
+                previousClassName="px-4 py-2 bg-[#2B6CB0] text-white rounded-md hover:bg-blue-700 cursor-pointer"
+                nextClassName="px-4 py-2 bg-[#2B6CB0] text-white rounded-md hover:bg-blue-700 cursor-pointer"
+                breakClassName="px-4 py-2 text-gray-500"
+                activeClassName="bg-blue-700 text-white"
+            />
         </div>
     );
 };

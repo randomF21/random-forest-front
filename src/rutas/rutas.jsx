@@ -4,7 +4,6 @@ import { Toaster } from 'react-hot-toast';
 // pagina del sistema
 import LandingPage from '../pages/LandingPage';
 import LoginPage from '../pages/LoginPage';
-import RegistroPage from '../pages/RegistroPage';
 import DashboardPage from '../pages/DashboardPage';
 import CargarDatosPage from '../pages/CargarDatosPage';
 import UsuariosPage from '../pages/UsuariosPage';
@@ -20,7 +19,7 @@ const AppRoutes = () => {
             <Routes>
                 <Route path="/" element={<LandingPage />} />
                 <Route path="/login" element={<LoginPage />} />
-                <Route path="/registro" element={<RegistroPage />} />
+                
 
                 <Route element={<RutaProtegida rolesPermitidos={[1, 2]} />} >
                     <Route path="/dashboard" element={<DashboardPage />} />
