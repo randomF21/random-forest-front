@@ -63,6 +63,10 @@ const ModeloService = {
         return await axios.post(`${env.api_url}/realizar-prediccion`, datos);
     },
 
+    realizarPrediccionUsuarios: async (data)=>{
+        return await axios.post(`${env.api_url}/predict/`, data);
+    },
+
     descargarExcel: async (fecha) => {
         try {
             const response = await axios.get(`${env.api_url}/descargar-predicciones-excel`, {

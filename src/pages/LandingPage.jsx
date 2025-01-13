@@ -18,7 +18,7 @@ const LandingPage= () => {
     };
     
     const RegistroClick = () => {
-        navigate('#');  // Redirige a la página de login
+        navigate('/formulario');  // Redirige a la página de login
     };
 
     return (

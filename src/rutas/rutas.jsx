@@ -19,6 +19,7 @@ const AppRoutes = () => {
             <Routes>
                 <Route path="/" element={<LandingPage />} />
                 <Route path="/login" element={<LoginPage />} />
+                <Route path="/formulario" element={<FormularioPage />} />
                 
 
                 <Route element={<RutaProtegida rolesPermitidos={[1, 2]} />} >
@@ -28,9 +29,7 @@ const AppRoutes = () => {
                     <Route path="/usuarios" element={<UsuariosPage />} />
                 </Route>
 
-                <Route element={<RutaProtegida rolesPermitidos={[3]} />} >
-                    <Route path="/formulario" element={<FormularioPage />} />
-                </Route>
+              
 
             </Routes>
             <Toaster position="top-right" reverseOrder={false} />
