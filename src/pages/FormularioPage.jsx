@@ -80,13 +80,13 @@ const FormularioPage = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-    
+
         // Verifica que estrato_numerico tenga un valor válido
         if (formData.estrato_numerico === undefined || formData.estrato_numerico === null) {
             setError("El estrato socioeconómico no está definido.");
             return;
         }
-    
+
         // Convertir los datos al formato que el backend espera
         const datosParaEnviar = {
             Edad: parseInt(formData.edad, 10),  // Convertir a número
@@ -101,9 +101,9 @@ const FormularioPage = () => {
             AreaUrbana: formData.area_urbana_rural === "Urbana" ? 1 : 0,
             EstratoSocioeconomico: formData.estrato_numerico,  // Usar el valor numérico
         };
-    
+
         console.log("Datos a enviar:", datosParaEnviar);
-    
+
         try {
             const response = await ModeloService.realizarPrediccionUsuarios(datosParaEnviar);
             console.log("Respuesta del backend:", response.data);
@@ -118,7 +118,6 @@ const FormularioPage = () => {
     return (
         <>
             <div className="flex m-0 p-0">
-                {/* <SideBar ruta_foto="https://picsum.photos/200" nombreUsuario={nombreCompleto} rol={rol} /> */}
                 <div className='w-full'>
                     <Navbar titulo={'Bienvenid@'} />
                     <div className=" mt-32 bg-white h-screen p-8">
@@ -258,7 +257,7 @@ const FormularioPage = () => {
                                             <p className="text-lg font-semibold">
                                                 <strong>Predicción:</strong> {traducirPrediccion(resultado.prediction)}
                                             </p>
-                                            {resultado.probabilities && Array.isArray(resultado.probabilities) && resultado.probabilities[0] ? (
+                                            {/* {resultado.probabilities && Array.isArray(resultado.probabilities) && resultado.probabilities[0] ? (
                                                 <p className="text-lg font-semibold">
                                                     <strong>Probabilidad:</strong> {resultado.probabilities[0][0].toFixed(2)}
                                                 </p>
@@ -266,16 +265,17 @@ const FormularioPage = () => {
                                                 <p className="text-lg font-semibold">
                                                     <strong>Probabilidad:</strong> No disponible
                                                 </p>
-                                            )}
+                                            )} */}
                                         </div>
                                         <div className="mt-6 bg-blue-50 p-6 rounded-lg">
                                             <h3 className="text-xl font-bold mb-2">¿Cómo interpretar el resultado?</h3>
                                             <p className="text-gray-700">
-                                                La predicción indica si existe un posible caso de suicidio basado en los datos proporcionados. 
-                                                Un valor de <strong>"Posible caso de suicidio"</strong> sugiere que se deben tomar medidas preventivas, 
+                                                La predicción indica si existe un posible caso de suicidio basado en los datos proporcionados.
+                                                Un valor de <strong>"Posible caso de suicidio"</strong> sugiere que se deben tomar medidas preventivas,
                                                 mientras que <strong>"No es un caso de suicidio"</strong> indica un riesgo bajo.
                                             </p>
                                         </div>
+                                        
                                     </>
                                 ) : (
                                     <p className="text-gray-600 text-center">Realiza una predicción para ver el resultado aquí.</p>
