@@ -48,6 +48,7 @@ const AgregarUsuarioModal = ({ isOpen, onClose }) => {
             console.log("Usuario creado:", usuarioCreado);
             AlertaService.success("Usuario creado exitosamente.");
             onClose();
+            window.location.reload();
         } catch (error) {
             AlertaService.error("Error al crear el usuario.");
         }

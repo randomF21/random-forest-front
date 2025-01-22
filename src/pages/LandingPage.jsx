@@ -18,7 +18,7 @@ const LandingPage= () => {
     };
     
     const RegistroClick = () => {
-        navigate('/registro');  // Redirige a la página de login
+        navigate('/formulario');  // Redirige a la página de login
     };
 
     return (
@@ -35,7 +35,7 @@ const LandingPage= () => {
                             Iniciar sesión
                         </button>
                         <button className="bg-gray-200 text-gray-800 px-4 py-2 rounded hover:bg-gray-300" onClick={RegistroClick}>
-                            Registrarse
+                            Realizar Predicción
                         </button>
                     </div>
                 </div>
@@ -165,7 +165,7 @@ const LandingPage= () => {
                     </div>
                     {/* Botón de WhatsApp */}
                     <a
-                        href="https://wa.me/3165402961"
+                        href="https://wa.me/#"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="fixed bottom-4 right-4 bg-green-500 text-white w-16 h-16 rounded-full shadow-lg hover:bg-green-600 transition flex items-center justify-center"

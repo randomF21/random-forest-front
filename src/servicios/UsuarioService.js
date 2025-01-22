@@ -8,7 +8,8 @@ import { AlertaService } from './AlertaService';
 
 // funcion para realizar la insercion de usuarios SUPER ADMIN o ADMIN
 const InsertarUsuario = async (credentials) => {
-    const autorizacion = getAutorizacion()
+    const autorizacion = getAutorizacion();
+    
     // definimos valores para cambiar por el del rol
     const rolMap = {
         'superadmin':1,
