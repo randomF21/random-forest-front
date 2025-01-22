@@ -57,18 +57,18 @@ const AgregarUsuarioModal = ({ isOpen, onClose }) => {
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-gray-100 rounded-lg p-8 w-full max-w-2xl relative">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div className="bg-gray-100 rounded-lg p-4 sm:p-8 w-full max-w-2xl relative">
                 <button
                     onClick={onClose}
-                    className="absolute right-4 top-4 text-gray-500 hover:text-gray-700"
+                    className="absolute right-2 sm:right-4 top-2 sm:top-4 text-gray-500 hover:text-gray-700"
                 >
                     <X className="w-6 h-6" />
                 </button>
 
-                <div className="flex items-center space-x-8">
+                <div className="flex flex-col lg:flex-row lg:items-center lg:space-x-8">
                     <div className="flex-1">
-                        <h2 className="text-3xl font-bold mb-6">Crear nuevo usuario</h2>
+                        <h2 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6">Crear nuevo usuario</h2>
 
                         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
 
@@ -138,7 +138,7 @@ const AgregarUsuarioModal = ({ isOpen, onClose }) => {
                         </form>
                     </div>
 
-                    <div className="w-72">
+                    <div className="hidden lg:block w-72">
                         <img src={nuevo_usuario} alt="Nuevo Usuario" />
                     </div>
                 </div>

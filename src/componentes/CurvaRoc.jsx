@@ -43,6 +43,7 @@ const CurvaROC = ({ rocData }) => {
 
     const options = {
         responsive: true,
+        maintainAspectRatio: false, // Permitir que el gráfico ajuste su altura
         plugins: {
             legend: {
                 position: 'top',

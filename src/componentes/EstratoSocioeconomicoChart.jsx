@@ -36,6 +36,7 @@ const EstratoSocioeconomicoChart = ({ data }) => {
 
     const options = {
         responsive: true,
+        maintainAspectRatio: false, // Permitir que el gráfico ajuste su altura
         plugins: {
             legend: {
                 display: false, // Ocultar la leyenda

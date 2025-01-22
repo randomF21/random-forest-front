@@ -7,10 +7,16 @@ import ModeloService from '../servicios/modeloService';
 import subir from '../assets/imagenes/subir.webp';
 
 const CargarDatosPage = () => {
-    const user = JSON.parse(sessionStorage.getItem('usuario')); // Suponiendo que guardas un objeto con los datos del usuario 
-    const { rol, nombre, apellido, id } = user;
+    const user = JSON.parse(sessionStorage.getItem('usuario')); // Suponiendo que guardas un objeto con los datos del usuario
+    // asignamos que necesitamos de estos datos
+    const { rol, nombre, apellido, id, imagen } = user;
+    const ruta = imagen ? `http://127.0.0.1:8000/foto_user/${imagen}` : null;
+    //agrupamos nombre en una sola variable
     const nombreCompleto = `${nombre} ${apellido}`; // Se utiliza para dar el espacio entre el nombre y el apellido
+    
     const [predictions, setPredictions] = useState([]);
+    const [isOpenSide, setIsOpenSide] = useState(false); // estado para el boton del sidebar
+
 
     // Servicio para cargar fechas de predicciones
     const cargarFechasPredicciones = async () => {
@@ -83,12 +89,16 @@ const CargarDatosPage = () => {
     return (
         <>
             <div className="flex m-0 p-0">
-                <SideBar ruta_foto="https://picsum.photos/200" nombreUsuario={nombreCompleto} rol={rol} id={id} />
-                <div className='w-full'>
-                    <Navbar titulo={'Cargar datos'} />
-                    <div className="flex flex-col md:flex-row ml-60 mt-10 bg-white min-h-screen">
+                <SideBar ruta_foto={ruta} nombreUsuario={nombreCompleto} rol={rol} isOpenSide={isOpenSide} setIsOpenSide={setIsOpenSide} id={id} />
+                <div
+                    className={`flex-1 transition-all duration-300 ${
+                        isOpenSide ? 'ml-60' : 'ml-0'
+                    }`}
+                >
+                    <Navbar size={'text-3xl'} titulo={'Cargar datos'} />
+                    <div className="flex flex-col lg:flex-row lg:ml-60 mt-32 lg:mt-10 bg-white min-h-screen">
                         {/* Sección de carga de archivos */}
-                        <div className="w-full md:w-1/2 flex flex-col items-center justify-center p-4">
+                        <div className="w-full lg:w-1/2 flex flex-col items-center justify-center p-4">
                             <h1 className="text-4xl font-semibold mb-6">Cargue el archivo</h1>
                             <div
                                 className="w-80 h-96 bg-[#F0F0F0] rounded-lg flex flex-col items-center justify-center cursor-pointer hover:bg-[#e7e6e6]"
@@ -134,7 +144,7 @@ const CargarDatosPage = () => {
                         </div>
 
                         {/* Sección de tabla de predicciones */}
-                        <div className="w-full md:w-1/2 mt-24 p-6 overflow-y-auto">
+                        <div className="w-full lg:w-1/2 mt-24 p-6 overflow-y-auto">
                             <h2 className="text-2xl font-semibold mb-4">Historial de Predicciones</h2>
                             <table className="w-full border-collapse border border-gray-300">
                                 <thead className="sticky top-0 bg-gray-100">

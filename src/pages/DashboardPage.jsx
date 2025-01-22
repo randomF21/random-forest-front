@@ -41,6 +41,7 @@ const DashboardPage = () => {
     const [fechas, setFechas] = useState([]);
     const [fechaSeleccionada, setFechaSeleccionada] = useState(null);
     const [error, setError] = useState(null);
+    const [isOpenSide, setIsOpenSide] = useState(false); // estado para el boton del sidebar
 
     useEffect(() => {
         const cargarDatosIniciales = async () => {
@@ -100,8 +101,6 @@ const DashboardPage = () => {
         return <p>Cargando datos...</p>;
     }
 
-
-
     const prediccionData = {
         labels: Object.keys(estadisticas.prediccion),
         datasets: [
@@ -125,11 +124,15 @@ const DashboardPage = () => {
     return (
         <>
             <div className="flex m-0 p-0">
-                <SideBar ruta_foto={ruta} nombreUsuario={nombreCompleto} rol={rol} />
-                <div className='w-full'>
-                    <Navbar titulo={'Bienvenid@'} />
-                    <div className="ml-60 mt-40 bg-white h-screen p-8">
-                        <div className="p-8 w-full min-h-screen">
+                <SideBar ruta_foto={ruta} nombreUsuario={nombreCompleto} rol={rol} id={id} isOpenSide={isOpenSide} setIsOpenSide={setIsOpenSide} />
+                <div
+                    className={`flex-1 transition-all duration-300 ${
+                        isOpenSide ? 'ml-60' : 'ml-0'
+                    }`}
+                >
+                    <Navbar size={'text-[29px]'} titulo={'Bienvenid@'} />
+                    <div className="lg:ml-60 mt-32 bg-white h-screen p-8">
+                        <div className="md:p-8 w-full min-h-screen">
                             <div className="max-w-7xl mx-auto space-y-6">
                                 {/* Select para fechas */}
                                 <div className="mb-4">
@@ -151,7 +154,7 @@ const DashboardPage = () => {
                                 </div>
 
                                 {/* Fila 1: Matriz de Confusión y Curva ROC */}
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                                     {/* Matriz de Confusión */}
                                     <div className="bg-white rounded-lg shadow-md p-6">
                                         <h2 className="text-xl font-bold mb-4 text-center">Matriz de Confusión</h2>
@@ -189,8 +192,8 @@ const DashboardPage = () => {
                                     </div>
 
                                     {/* Curva ROC */}
-                                    <div className="bg-white rounded-lg shadow-md p-6">
-                                        <div className="h-64">
+                                    <div className="flex justify-center items-center rounded-lg shadow-md p-2">
+                                        <div className="max-w-[400px] md:max-w-[600px] lg:max-w-[800px] w-full md:p-6">
                                             <CurvaROC rocData={rocData} />
                                         </div>
                                     </div>
@@ -215,14 +218,14 @@ const DashboardPage = () => {
 
                                 {/* Fila 3: Gráficas de predicciones */}
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    <div className="bg-white rounded-lg shadow-md p-6">
-                                        <div className="h-64">
+                                    <div className="flex justify-center items-center rounded-lg shadow-md p-2">
+                                        <div className="max-w-[400px] md:max-w-[600px] lg:max-w-[800px] w-full md:p-6">
                                             <SuicidioPorGenero data={estadisticas.tasa_suicidio_genero} />
                                         </div>
                                     </div>
 
-                                    <div className="bg-white rounded-lg shadow-md p-6">
-                                        <div className="h-64">
+                                    <div className="flex justify-center items-center rounded-lg shadow-md p-2 mb-4 sm:mb-0">
+                                        <div className="max-w-[400px] md:max-w-[600px] lg:max-w-[800px] w-full md:p-6">
                                             <EstratoSocioeconomicoChart data={estadisticas.estrato} />
                                         </div>
                                     </div>

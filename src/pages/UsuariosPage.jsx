@@ -17,6 +17,8 @@ const UsuariosPage = () => {
     const nombreCompleto = `${nombre} ${apellido}`;
     // definimos y alternamos el estado de la modal
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isOpenSide, setIsOpenSide] = useState(false); // estado para el boton del sidebar
+
     // funcion para abrir
     const openModal = () => {
         setIsModalOpen(true);
@@ -76,10 +78,14 @@ const UsuariosPage = () => {
     return (
         <>
             <div className="flex m-0 p-0">
-                <SideBar ruta_foto={ruta} nombreUsuario={nombreCompleto} rol={rol} id={id} />
-                <div className='w-full'>
-                    <Navbar titulo={'Usuarios'} />
-                    <div className="ml-60 mt-32 bg-white h-screen p-8">
+                <SideBar ruta_foto={ruta} nombreUsuario={nombreCompleto} rol={rol} id={id} isOpenSide={isOpenSide} setIsOpenSide={setIsOpenSide} />
+                <div
+                    className={`flex-1 transition-all duration-300 ${
+                        isOpenSide ? 'ml-60' : 'ml-0'
+                    }`}
+                >
+                    <Navbar size={'text-4xl'} titulo={'Usuarios'} />
+                    <div className="lg:ml-60 mt-32 bg-white h-screen p-2 lg:p-8">
                         <div className="overflow-x-auto w-11/12 mx-auto">
                             <button onClick={openModal}
                                 className="bg-[#2B6CB0] p-2 text-white rounded-lg mb-10 hover:bg-[#125fb0]">
