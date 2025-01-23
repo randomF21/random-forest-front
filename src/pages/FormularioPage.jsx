@@ -119,7 +119,7 @@ const FormularioPage = () => {
         <>
             <div className="flex m-0 p-0">
                 <div className='w-full'>
-                    <Navbar titulo={'Bienvenid@'} />
+                    <Navbar formPredic={true} titulo={'Bienvenid@'} />
                     <div className=" mt-32 bg-white h-screen p-8">
                         <div className="flex space-x-8">
                             {/* Columna del formulario */}
@@ -136,7 +136,7 @@ const FormularioPage = () => {
                                     </div>
 
                                     {/* Campo: Sexo biológico */}
-                                    <div className="mb-4">
+                                    {/* <div className="mb-4">
                                         <label htmlFor="sexo-biologico" className="block text-base font-medium mb-2">
                                             Sexo biológico
                                         </label>
@@ -147,7 +147,7 @@ const FormularioPage = () => {
                                             <option value="Masculino">Masculino</option>
                                             <option value="Femenino">Femenino</option>
                                         </select>
-                                    </div>
+                                    </div> */}
 
                                     {/* Campo: Escolaridad */}
                                     <div>
@@ -209,37 +209,45 @@ const FormularioPage = () => {
                                         </select>
                                     </div>
 
-                                    {/* Campo: Comorbilidades */}
-                                    <div>
-                                        <label className="block text-base font-medium mb-2">
-                                            Comorbilidades (Otras Enfermedades Asociadas)
-                                        </label>
-                                        <div className="space-y-2">
-                                            {[
-                                                "Ninguna",
-                                                "Trastorno de estrés postraumático",
-                                                "Esquizofrenia",
-                                                "Depresión",
-                                                "Otra enfermedad",
-                                            ].map((comorbilidad) => (
-                                                <div key={comorbilidad} className="flex items-center">
-                                                    <input
-                                                        type="checkbox"
-                                                        id={comorbilidad}
-                                                        name="comorbilidades"
-                                                        value={comorbilidad}
-                                                        checked={formData.comorbilidades.includes(comorbilidad)}
-                                                        onChange={handleCheckboxChange}
-                                                        className="h-4 w-4 text-[#2B6CB0] focus:ring-[#2B6CB0] border-gray-300 rounded"
-                                                    />
-                                                    <label htmlFor={comorbilidad} className="ml-2 block text-sm text-gray-900">
-                                                        {comorbilidad}
-                                                    </label>
-                                                </div>
-                                            ))}
-                                        </div>
+
+                                </div>
+
+                                {/* Campo: Comorbilidades */}
+                                <div>
+                                    <label className="block text-base font-medium mb-2 mt-2">
+                                        Comorbilidades (Otras Enfermedades Asociadas)
+                                    </label>
+                                    {/* <div className="space-y-2"></div> */}
+                                    <div className="grid grid-cols-2 gap-4">
+                                        {[
+                                            "Ansiedad",
+                                            "Depresión",
+                                            "Esquizofrenia",
+                                            "estrés",
+                                            "Trastorno alimenticio",
+                                            "Trastorno de estrés postraumático",
+                                            "Trastorno de hiperactividad",
+                                            "Ninguna",
+                                            "Otra enfermedad",
+                                        ].map((comorbilidad) => (
+                                            <div key={comorbilidad} className="flex items-center">
+                                                <input
+                                                    type="checkbox"
+                                                    id={comorbilidad}
+                                                    name="comorbilidades"
+                                                    value={comorbilidad}
+                                                    checked={formData.comorbilidades.includes(comorbilidad)}
+                                                    onChange={handleCheckboxChange}
+                                                    className="h-4 w-4 text-[#2B6CB0] focus:ring-[#2B6CB0] border-gray-300 rounded"
+                                                />
+                                                <label htmlFor={comorbilidad} className="ml-2 block text-sm text-gray-900">
+                                                    {comorbilidad}
+                                                </label>
+                                            </div>
+                                        ))}
                                     </div>
                                 </div>
+
                                 <div className="mt-6 flex justify-center">
                                     <button type="submit"
                                         className="w-7/12 px-4 py-2 bg-[#2B6CB0] text-white font-semibold rounded-md shadow-md hover:bg-[#125fb0]">
@@ -275,7 +283,7 @@ const FormularioPage = () => {
                                                 mientras que <strong>"No es un caso de suicidio"</strong> indica un riesgo bajo.
                                             </p>
                                         </div>
-                                        
+
                                     </>
                                 ) : (
                                     <p className="text-gray-600 text-center">Realiza una predicción para ver el resultado aquí.</p>
