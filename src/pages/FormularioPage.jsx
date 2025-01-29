@@ -117,14 +117,14 @@ const FormularioPage = () => {
 
     return (
         <>
-            <div className="flex m-0 p-0">
+            <div className="flex flex-col md:flex-row m-0 p-0">
                 <div className='w-full'>
-                    <Navbar formPredic={true} titulo={'Bienvenid@'} />
+                    <Navbar formPredic={true} size={'text-[29px]'} titulo={'Bienvenid@'} />
                     <div className=" mt-32 bg-white h-screen p-8">
-                        <div className="flex space-x-8">
+                        <div className="flex flex-col lg:flex-row lg:space-x-8 space-y-8 lg:space-y-0">
                             {/* Columna del formulario */}
-                            <form onSubmit={handleSubmit} className="w-1/2 p-8 border border-gray-200 rounded-lg shadow-md">
-                                <div className="grid grid-cols-2 gap-4">
+                            <form onSubmit={handleSubmit} className="w-full lg:w-1/2 p-8 border border-gray-200 rounded-lg shadow-md">
+                                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                                     {/* Campo: Edad */}
                                     <div>
                                         <label htmlFor="edad" className="block text-base font-medium mb-2">
@@ -218,7 +218,7 @@ const FormularioPage = () => {
                                         Comorbilidades (Otras Enfermedades Asociadas)
                                     </label>
                                     {/* <div className="space-y-2"></div> */}
-                                    <div className="grid grid-cols-2 gap-4">
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                         {[
                                             "Ansiedad",
                                             "Depresión",
@@ -257,7 +257,7 @@ const FormularioPage = () => {
                             </form>
 
                             {/* Columna de la card con el resultado */}
-                            <div className="w-1/2 p-8 border border-gray-200 rounded-lg shadow-md">
+                            <div className="w-full lg:w-1/2 p-8 border border-gray-200 rounded-lg shadow-md">
                                 {resultado ? (
                                     <>
                                         <h2 className="text-2xl font-bold mb-4">Resultado de la Predicción</h2>
